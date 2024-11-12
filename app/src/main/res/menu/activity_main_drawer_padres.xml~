@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Opción de Inicio -->
+    <item
+        android:id="@+id/nav_home"
+        android:title="Inicio"
+        android:icon="@drawable/ic_home" />
+
+    <!-- Opción de Ver Mensajes -->
+
+    <item
+        android:id="@+id/nav_messages"
+        android:title="Comunica"
+        android:icon="@drawable/ic_message" />
+
+    <item
+        android:id="@+id/nav_messages"
+        android:title="Calificaciones"
+        android:icon="@drawable/ic_message" />
+
+    <!-- Opción de Ver Hijos -->
+    <item
+        android:id="@+id/nav_children"
+        android:title="Asistencia"
+        android:icon="@drawable/ic_children" />
+
+    <!-- Opción de Perfil -->
+    <item
+        android:id="@+id/nav_profile"
+        android:title="Perfil"
+        android:icon="@drawable/ic_profile" />
+
+    <!-- Opción de Cerrar Sesión -->
+    <item
+        android:id="@+id/nav_logout"
+        android:title="Cerrar Sesión"
+        android:icon="@drawable/ic_logout" />
+
+</menu>
