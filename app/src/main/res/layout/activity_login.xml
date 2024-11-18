@@ -5,14 +5,14 @@
     android:id="@+id/nav_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Login">
+    tools:context=".LoginActivity">
 
     <EditText
         android:id="@+id/etEmail"
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="308dp"
+        android:layout_marginTop="388dp"
         android:layout_marginEnd="15dp"
         android:background="@drawable/edit_text"
         android:backgroundTint="@color/black"
@@ -30,7 +30,7 @@
         android:textSize="20sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -62,8 +62,8 @@
 
     <Button
         android:id="@+id/btIngresar"
-        android:layout_width="164dp"
-        android:layout_height="50dp"
+        android:layout_width="179dp"
+        android:layout_height="58dp"
         android:layout_marginTop="40dp"
         android:backgroundTint="#17879B"
         android:fontFamily="@font/adamina"
@@ -71,7 +71,7 @@
         android:text="Ingresar"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="23sp"
+        android:textSize="21sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -86,13 +86,13 @@
         android:text="Olvidé mi Password"
         android:textAlignment="center"
         android:textColor="#3992E0"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btIngresar"
-        app:layout_constraintVertical_bias="0.209" />
+        app:layout_constraintVertical_bias="0.169" />
 
     <TextView
         android:id="@+id/textView"
@@ -100,7 +100,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/akaya_kanadaka"
         android:text="Puente De Comunicación"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -110,15 +110,15 @@
 
     <ImageView
         android:id="@+id/imageEscudo"
-        android:layout_width="158dp"
-        android:layout_height="159dp"
+        android:layout_width="185dp"
+        android:layout_height="189dp"
         android:src="@drawable/escudo"
         app:layout_constraintBottom_toTopOf="@+id/etEmail"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.516"
+        app:layout_constraintVertical_bias="0.507"
         tools:src="@tools:sample/avatars" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

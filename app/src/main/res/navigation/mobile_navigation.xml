@@ -22,4 +22,24 @@
         android:name="com.softannate.apppuentedecomunicacion.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+    <activity
+        android:id="@+id/nav_login"
+        android:name="com.softannate.apppuentedecomunicacion.LoginActivity"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
+    <fragment
+        android:id="@+id/inicio"
+        android:name="com.softannate.apppuentedecomunicacion.ui.inicio.Inicio"
+        android:label="fragment_inicio"
+        tools:layout="@layout/fragment_inicio" />
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.softannate.apppuentedecomunicacion.MainActivity"
+        android:label="app_bar_main"
+        tools:layout="@layout/app_bar_main" />
+    <activity
+        android:id="@+id/splashActivity"
+        android:name="com.softannate.apppuentedecomunicacion.SplashActivity"
+        android:label="activity_splash"
+        tools:layout="@layout/activity_splash" />
 </navigation>
