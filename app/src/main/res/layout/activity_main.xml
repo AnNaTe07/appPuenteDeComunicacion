@@ -21,5 +21,10 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_main_drawer" />
+        app:menu="@menu/activity_main_drawer"
+        app:itemTextAppearance="@style/NavigationViewItemFontStyle"
+        app:itemTextColor="@android:color/black"
+        android:background="@android:color/white"
+        app:itemBackground="@drawable/item_selected" /> <!-- cambia el fondo cuando se selecciona un ítem -->
+ <!-- cambio el fondo del NavigationView -->
 </androidx.drawerlayout.widget.DrawerLayout>

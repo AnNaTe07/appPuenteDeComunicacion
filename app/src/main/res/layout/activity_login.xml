@@ -12,14 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="388dp"
+        android:layout_marginTop="356dp"
         android:layout_marginEnd="15dp"
         android:background="@drawable/edit_text"
         android:backgroundTint="@color/black"
-
         android:drawableLeft="@drawable/correo_electronico"
         android:drawablePadding="10dp"
-        android:drawableTint="#17879B"
+        android:drawableTint="@color/colorBase"
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
@@ -30,7 +29,7 @@
         android:textSize="20sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,28 +59,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etEmail" />
 
-    <Button
-        android:id="@+id/btIngresar"
-        android:layout_width="179dp"
-        android:layout_height="58dp"
-        android:layout_marginTop="40dp"
-        android:backgroundTint="#17879B"
-        android:fontFamily="@font/adamina"
-        android:padding="5sp"
-        android:text="Ingresar"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="21sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPass" />
-
 
     <TextView
         android:id="@+id/tvOlvidePass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="27dp"
+        android:layout_marginBottom="44dp"
         android:fontFamily="@font/adamina"
         android:text="Olvidé mi Password"
         android:textAlignment="center"
@@ -90,9 +74,10 @@
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btIngresar"
-        app:layout_constraintVertical_bias="0.169" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textView"
@@ -100,6 +85,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/akaya_kanadaka"
         android:text="Puente De Comunicación"
+        android:textColor="#0F0E0E"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -120,5 +106,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.507"
         tools:src="@tools:sample/avatars" />
+
+    <Button
+        android:id="@+id/btIngresar"
+        android:layout_width="179dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="40dp"
+        android:background="#17879B"
+        android:fontFamily="@font/adamina"
+        android:padding="8dp"
+        android:text="Ingresar"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="21sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPass" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,9 +1,11 @@
 package com.softannate.apppuentedecomunicacion;
 
 import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -48,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
         //evento para ingresar
         binding.btIngresar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,5 +71,9 @@ public class LoginActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        // Cambiar el color de la barra de navegación desde código
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.white));
+        }
     }
 }

@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -15,14 +16,23 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class SplashActivityViewModel extends AndroidViewModel {
 
     private final MutableLiveData<Navegacion> navegacion = new MutableLiveData<>();
     public LiveData<Navegacion> nav=navegacion;
+    private MutableLiveData<String> mensaje;
 
     public SplashActivityViewModel(@NonNull Application application) {
         super(application);
+    }
+
+    public LiveData<String> getMensaje() {
+        if (mensaje == null) {
+            mensaje = new MutableLiveData<>();
+        }
+        return mensaje;
     }
 
     public  void estadoUsuario(){
@@ -32,6 +42,9 @@ public class SplashActivityViewModel extends AndroidViewModel {
         String expiracion = ApiClient.getExpiracion(getApplication());
         Log.d("SplashActivity", "Token: " + token);  // Verifico el token
         Log.d("SplashActivity", "Expiración: " + expiracion);  // Verifico la expiración
+        String nombre = ApiClient.getNombre(getApplication());
+        Log.d("SplashActivity", "Nombre: " + nombre);
+
 
 
         if(token ==null || expiracion == null){
@@ -42,6 +55,8 @@ public class SplashActivityViewModel extends AndroidViewModel {
 
         if(isTokenvalido(expiracion)){
             navegacion.setValue(Navegacion.INICIO);
+           // String nombre = ApiClient.getNombre(getApplication());
+            mensaje.setValue("Bienvenido " + nombre);
         }else{
             navegacion.setValue(Navegacion.LOGIN);
         }
@@ -51,6 +66,7 @@ public class SplashActivityViewModel extends AndroidViewModel {
             //convierto la fecha de string  Date
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
 
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
             Date fechaexpiracion = sdf.parse(expiracion);
             if(fechaexpiracion!= null){
             //comparo fecha expiracion con fecha actual

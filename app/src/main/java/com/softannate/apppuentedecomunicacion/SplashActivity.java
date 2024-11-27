@@ -1,7 +1,10 @@
 package com.softannate.apppuentedecomunicacion;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,9 +35,19 @@ public class SplashActivity extends AppCompatActivity {
         vm.nav.observe(this, new Observer<Navegacion>() {
             @Override
             public void onChanged(Navegacion navegacion) {
-                //lógica de navegacion a navManager
+                // Lógica de navegación a NavManager para que se encargue de la navegación
                 NavManager.navegarAVista(SplashActivity.this, navegacion);
+
                 finish();//finalizo SplashActivity
+            }
+        });
+
+        // Observer para el mensaje de bienvenida
+        vm.getMensaje().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String mensaje) {
+                // Mostrar el mensaje en un Toast cada vez que el valor de 'mensaje' cambie
+                Toast.makeText(SplashActivity.this, mensaje, Toast.LENGTH_SHORT).show();
             }
         });
         //3 segundos para cerrar
@@ -51,5 +64,10 @@ public class SplashActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Cambiar el color de la barra de navegación desde código
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.white));
+        }
     }
 }

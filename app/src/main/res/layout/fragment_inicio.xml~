@@ -5,13 +5,13 @@
     android:id="@+id/nav_inicio"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.inicio.Inicio" >
+    tools:context=".ui.inicio.InicioFragment" >
 
 
     <ImageView
         android:id="@+id/imageFrente"
-        android:layout_width="413dp"
-        android:layout_height="198dp"
+        android:layout_width="417dp"
+        android:layout_height="211dp"
         android:src="@drawable/frente"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,7 +29,8 @@
         android:fontFamily="@font/adamina"
         android:text="Escuela Técnica N°37 "
         android:textAlignment="center"
-        android:textSize="25sp"
+        android:textColor="#0F0E0E"
+        android:textSize="23sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
@@ -44,7 +45,8 @@
         android:fontFamily="@font/adamina"
         android:text="Ing. Germán Avé Lallemant"
         android:textAlignment="center"
-        android:textSize="25sp"
+        android:textColor="#0F0E0E"
+        android:textSize="23sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
@@ -52,10 +54,10 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/tvLlamada"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:layout_marginTop="184dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="45dp"
         android:drawableLeft="@drawable/telefono"
         android:drawablePadding="30dp"
         android:fontFamily="@font/adamina"
@@ -63,17 +65,18 @@
         android:paddingStart="20dp"
         android:text="Llamar a la escuela"
         android:textAlignment="viewStart"
-        android:textSize="26sp"
+        android:textColor="#0F0E0E"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/tvUbicacion"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:layout_marginTop="40dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="45dp"
         android:drawableLeft="@drawable/location"
         android:drawablePadding="30dp"
         android:fontFamily="@font/adamina"
@@ -81,17 +84,18 @@
         android:paddingStart="20dp"
         android:text="Ubicación"
         android:textAlignment="viewStart"
-        android:textSize="26sp"
+        android:textColor="#0F0E0E"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/tvLlamada" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/tvFacebook"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:layout_marginTop="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="45dp"
         android:drawableLeft="@drawable/facebook"
         android:drawablePadding="30dp"
         android:fontFamily="@font/adamina"
@@ -99,23 +103,27 @@
         android:paddingStart="20dp"
         android:text="Ir a facebook"
         android:textAlignment="viewStart"
-        android:textSize="26sp"
+        android:textColor="#0F0E0E"
+        android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"
-        app:layout_constraintVertical_bias="0.934" />
+        app:layout_constraintTop_toBottomOf="@+id/tvUbicacion"
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/editTextTextMultiLine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="355dp"
+        android:layout_height="101dp"
         android:layout_marginTop="41dp"
+        android:background="@android:color/transparent"
         android:ems="10"
+        android:fontFamily="@font/adamina"
         android:gravity="start|top"
         android:inputType="textMultiLine"
-        android:text="Teléfono : 4452000 - internos: Dirección (6532)/ "
+        android:text="Teléfono : 4452000 - internos: Dirección (6532) / Regencia (6533) / Secretaria (5735)"
+        android:textColor="#0F0E0E"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />

@@ -1,27 +1,26 @@
-package com.softannate.apppuentedecomunicacion.ui.gallery;
+package com.softannate.apppuentedecomunicacion.ui.mensajes;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.softannate.apppuentedecomunicacion.databinding.FragmentGalleryBinding;
+import com.softannate.apppuentedecomunicacion.databinding.FragmentSlideshowBinding;
 
-public class GalleryFragment extends Fragment {
+public class SlideshowFragment extends Fragment {
 
-    private FragmentGalleryBinding binding;
+    private FragmentSlideshowBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        GalleryViewModel galleryViewModel =
-                new ViewModelProvider(this).get(GalleryViewModel.class);
+        SlideshowViewModel slideshowViewModel =
+                new ViewModelProvider(this).get(SlideshowViewModel.class);
 
-        binding = FragmentGalleryBinding.inflate(inflater, container, false);
+        binding = FragmentSlideshowBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
 

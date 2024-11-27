@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.slideshow.SlideshowFragment">
+    tools:context=".ui.mensajes.SlideshowFragment">
 
     <!-- Spinner para seleccionar a quien va dirigido (Destinatarios) -->
 
@@ -112,11 +112,12 @@
         android:id="@+id/buttonAttach"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#17879B"
         android:text="Adjuntar Foto/Archivo"
-        app:layout_constraintTop_toBottomOf="@id/editTextMessage"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextMessage" />
 
     <!-- Botón para enviar el mensaje -->
     <Button
@@ -124,7 +125,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:background="@color/black"
+        android:background="#17879B"
         android:text="Enviar Mensaje"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"

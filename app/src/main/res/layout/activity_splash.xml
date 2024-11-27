@@ -26,6 +26,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/akaya_kanadaka"
         android:text="Puente De Comunicación"
+        android:textColor="#0F0E0E"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

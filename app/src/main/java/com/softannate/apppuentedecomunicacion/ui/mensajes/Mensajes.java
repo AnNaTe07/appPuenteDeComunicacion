@@ -1,4 +1,4 @@
-package com.softannate.apppuentedecomunicacion.ui.slideshow;
+package com.softannate.apppuentedecomunicacion.ui.mensajes;
 
 import androidx.lifecycle.ViewModelProvider;
 

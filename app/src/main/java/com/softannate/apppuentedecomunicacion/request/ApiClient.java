@@ -2,6 +2,8 @@ package com.softannate.apppuentedecomunicacion.request;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.softannate.apppuentedecomunicacion.modelos.EstadoAsistencia;
@@ -11,6 +13,8 @@ import com.softannate.apppuentedecomunicacion.modelos.Nivel;
 import com.softannate.apppuentedecomunicacion.modelos.OlvidaPass;
 import com.softannate.apppuentedecomunicacion.modelos.Rol;
 import com.softannate.apppuentedecomunicacion.modelos.TipoActividad;
+import com.softannate.apppuentedecomunicacion.modelos.Usuario;
+
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 public class ApiClient {
@@ -67,6 +72,11 @@ public class ApiClient {
         @POST("usuario/olvidePass")
         Call<ResponseBody> enviarEmail(@Body OlvidaPass dto);
 
+        //Profile
+        @GET("usuario/profile")
+        Call<Usuario> profile(@Header("Authorization") String token);
+
+
 
     }
 
@@ -77,13 +87,30 @@ public class ApiClient {
 
         //guardar datos del usuario
         editor.putString("token", token);
-        editor.putString("role",rol);
+        editor.putString("rol",rol);
         editor.putString("fullName",nombre);
         editor.putString("email", email);
         editor.putString("id",id);
-        editor.putString("expiration", expiracion);
+        editor.putString("expiracion", expiracion);
 
-        editor.apply();
+        boolean success = editor.commit();  // Usar commit() para asegurar que se guarde sincrónicamente
+
+        // Verificar si la operación fue exitosa
+        Log.d("GuardarToken", "Expiración guardada: " + expiracion + ", éxito: " + success);
+
+        String expiracionGuardada = sp.getString("expiracion", "No encontrado");
+        Log.d("GuardarToken", "token guardado: " + token);
+        Log.d("GuardarToken", "rol guardado: " + rol);
+        Log.d("GuardarToken", "nombre guardado: " + nombre);
+        Log.d("GuardarToken", "email guardado: " + email);
+        Log.d("GuardarToken", "id guardado: " + id);
+        Log.d("GuardarToken", "Expiración guardada: " + expiracionGuardada);
+
+        Log.d("GuardarToken", "Nombre guardado: " + nombre); // Verificar si el nombre se guarda correctamente
+
+        // Verificar si el nombre se ha guardado
+        String nombreGuardado = sp.getString("fullName", "No encontrado");
+        Log.d("GuardarToken", "Nombre guardado: " + nombreGuardado);
     }
     public static String getToken(Context context){
         SharedPreferences sp= context.getSharedPreferences("datosUsuario.xml", Context.MODE_PRIVATE);
@@ -95,7 +122,8 @@ public class ApiClient {
     }
     public static String getNombre(Context context){
         SharedPreferences sp= context.getSharedPreferences("datosUsuario.xml", Context.MODE_PRIVATE);
-        return sp.getString("nombre", null);
+
+        return sp.getString("fullName", null);
     }
     public static String getEmail( Context context){
         SharedPreferences sp= context.getSharedPreferences("datosUsuario.xml",Context.MODE_PRIVATE);
@@ -107,6 +135,10 @@ public class ApiClient {
     }
     public static String getExpiracion(Context context){
         SharedPreferences sp= context.getSharedPreferences("datosUsuario.xml", Context.MODE_PRIVATE);
+        String expiracion = sp.getString("expiracion", null);
+
+        // Verifico como obtengo la expiración
+        Log.d("GetExpiracion", "Expiración recuperada: " + expiracion);
         return sp.getString("expiracion", null);
     }
 }

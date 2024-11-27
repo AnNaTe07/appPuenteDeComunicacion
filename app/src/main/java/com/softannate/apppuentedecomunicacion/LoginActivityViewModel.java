@@ -43,7 +43,7 @@ public class LoginActivityViewModel extends AndroidViewModel {
 
     public boolean validarEmail(String email) {
         if (email.isEmpty()) {
-            mensaje.setValue("El email es obligatorio");
+            mensaje.setValue("Por favor, ingresa tu email");
             return false;
         }
         return true;
@@ -79,20 +79,21 @@ public class LoginActivityViewModel extends AndroidViewModel {
                     Log.d("Login", "Response: " + body.toString());
                         String token = (String) body.get("token");
                         String rol = (String) body.get("rol");
-                        String nombre = (String) body.get("nombre");
+                        String nombre = (String) body.get("fullName");
                         String email = (String) body.get("email");
                         String id = (String) body.get("id");
                         String expiracion = (String) body.get("expiracion");
 
                         //guardo los datos en sp
                         ApiClient.guardarToken("Bearer " + token, rol, nombre, email, id, expiracion, getApplication());
+                        // Log.d("Login", "expiracion: " + expiracion);
 
                         Intent intent = new Intent(getApplication(), MainActivity.class);
                         //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("login", true);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     getApplication().startActivity(intent);
-                        Toast.makeText(getApplication(), "Bienvenido", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplication(), "Bienvenido "+nombre, Toast.LENGTH_SHORT).show();
                     }else {
                     Log.e("Login", "Error en la respuesta: " + response.message());
                     Toast.makeText(getApplication(), "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
@@ -110,9 +111,9 @@ public class LoginActivityViewModel extends AndroidViewModel {
         if (!validarEmail(email)) {
             return;//salgo si el email no es válido
         }
-      envirEmailParaRestablecer(email);
+      enviarEmailParaRestablecer(email);
     }
-    public void envirEmailParaRestablecer(String email) {
+    public void enviarEmailParaRestablecer(String email) {
         OlvidaPass olvidaPass = new OlvidaPass(email);
         ApiClient.Endpoints api = ApiClient.getApi();
         Call<ResponseBody> call = api.enviarEmail(olvidaPass);

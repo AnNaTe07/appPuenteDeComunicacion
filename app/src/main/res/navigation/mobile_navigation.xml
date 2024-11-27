@@ -3,23 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@id/nav_inicio">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.softannate.apppuentedecomunicacion.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/nav_comunicados"
+        android:name="com.softannate.apppuentedecomunicacion.ui.comunicados.ComunicadosFragment"
+        android:label="@string/menu_comunicados"
+        tools:layout="@layout/fragment_comunicados" />
+    <fragment
+        android:id="@+id/map"
+        android:name="com.softannate.apppuentedecomunicacion.ui.inicio.UbicacionFragment"
+        android:label="Ubicación"
+        tools:layout="@layout/fragment_ubicacion" />
+
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.softannate.apppuentedecomunicacion.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_perfil"
+        android:name="com.softannate.apppuentedecomunicacion.ui.perfil.PerfilFragment"
+        android:label="@string/menu_perfil"
+        tools:layout="@layout/fragment_perfil" />
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="com.softannate.apppuentedecomunicacion.ui.slideshow.SlideshowFragment"
+        android:name="com.softannate.apppuentedecomunicacion.ui.mensajes.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
     <activity
@@ -28,10 +34,14 @@
         android:label="activity_login"
         tools:layout="@layout/activity_login" />
     <fragment
-        android:id="@+id/inicio"
-        android:name="com.softannate.apppuentedecomunicacion.ui.inicio.Inicio"
-        android:label="fragment_inicio"
-        tools:layout="@layout/fragment_inicio" />
+        android:id="@+id/nav_inicio"
+        android:name="com.softannate.apppuentedecomunicacion.ui.inicio.InicioFragment"
+        android:label="Inicio"
+        tools:layout="@layout/fragment_inicio" >
+        <action
+            android:id="@+id/action_nav_inicio_to_map"
+            app:destination="@id/map" />
+    </fragment>
     <activity
         android:id="@+id/mainActivity"
         android:name="com.softannate.apppuentedecomunicacion.MainActivity"

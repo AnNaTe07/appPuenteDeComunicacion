@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 }
 
 android {
@@ -53,6 +54,7 @@ dependencies {
     implementation(libs.converter.scalars)
     implementation(libs.glide)
     implementation(libs.okhttp)
+    implementation(libs.browser)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
