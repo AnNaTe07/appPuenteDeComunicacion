@@ -59,7 +59,12 @@ public class ConversacionFragment extends FragmentNuevoConversacion {
         });
 
  */
-
+        vmConversacion.mostrarLayout().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean mostrar) {
+                binding.layoutEscribir.footEscribir.setVisibility(mostrar ? View.VISIBLE : View.GONE);
+            }
+        });
         //inicializo lista de mensajes
         listaMensajes=new ArrayList<>();
         //adapter = new ConversacionAdapter(listaMensajes, vmConversacion.getIdVisual());

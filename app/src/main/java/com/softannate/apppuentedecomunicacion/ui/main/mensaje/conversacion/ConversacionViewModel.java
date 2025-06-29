@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import com.softannate.apppuentedecomunicacion.base.ViewModelConversacionNuevo;
 import com.softannate.apppuentedecomunicacion.data.local.SpManager;
@@ -22,6 +23,7 @@ public class ConversacionViewModel extends ViewModelConversacionNuevo {
     //private MutableLiveData<List<MensajeDTO>> listaMensajes = new MutableLiveData<>();
     private int alumnoId, usuarioId, emisorId, receptorId;
     private int idVisual;
+    private MutableLiveData<Boolean> mostrarLayout=new MutableLiveData<>();;
 
 
     public ConversacionViewModel(@NonNull Application application) {
@@ -43,19 +45,16 @@ public class ConversacionViewModel extends ViewModelConversacionNuevo {
         this.receptorId = receptorId;
         this.alumnoId = alumnoId;
         this.idVisual = emisorId;
-
+    }
+    public LiveData<Boolean> mostrarLayout() {
+        if(mostrarLayout==null){
+            mostrarLayout= new MutableLiveData<>();
+        }
+        return mostrarLayout;
     }
 
     public void cargarMensajes(){
         Call<List<MensajeDTO>> call;
-        /*
-        if (alumnoId == 0) {
-            call= endpoints.conversacion(usuarioId);
-        } else {
-            call = endpoints.conversacionConAlumno(usuarioId, alumnoId);
-        }
-
-         */
         if (emisorId != 0 && receptorId != 0 && usuarioId != emisorId && usuarioId != receptorId) {
             // 👀 Director viendo una conversación ajena
             call = endpoints.conversacionAjenaConAlumno( receptorId, alumnoId,emisorId);
@@ -144,21 +143,24 @@ public class ConversacionViewModel extends ViewModelConversacionNuevo {
         String rol = SpManager.getRol(context);
 
         if (emisorId == -1 || receptorId == -1) {
-            // 🔸 Fallback (por si viene solo un userId viejo)
+            // Fallback (por si viene solo un userId viejo)
             int userId = args.getInt("userId");
             setIds(userId, alumnoId);
+            mostrarLayout.setValue(true);
             return;
         }
 
         if (userLogueadoId == emisorId || userLogueadoId == receptorId) {
-            // ✅ Caso 1 o 2: usuario (común o director) participa
+            //  Caso 1 o 2: usuario (común o director) participa
             int otro = (userLogueadoId == emisorId) ? receptorId : emisorId;
             setIds(otro, alumnoId);
+            mostrarLayout.setValue(true);
         } else if ("2".equals(rol)) {
-            // ✅ Caso 3: director viendo conversación ajena
+            //  Caso 3: director viendo conversación ajena
             setIdsParaDirector(emisorId, receptorId, alumnoId);
+            mostrarLayout.setValue(false);
         } else {
-            // ❌ Esto nunca debería pasar (usuario no autorizado a ver conversación ajena)
+            //  Esto nunca debería pasar (usuario no autorizado a ver conversación ajena)
             Log.e("Conversacion", "Usuario sin permisos para esta conversación.");
         }
     }
