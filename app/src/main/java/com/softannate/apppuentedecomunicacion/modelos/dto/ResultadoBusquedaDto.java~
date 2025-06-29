@@ -1,0 +1,21 @@
+package com.softannate.apppuentedecomunicacion.modelos.dto;
+
+import java.util.List;
+
+public class ResultadoBusquedaDto {
+    private String filtro;
+    private List<MensajeDTO> resultados;
+
+    public ResultadoBusquedaDto(String filtro, List<MensajeDTO> resultados) {
+        this.filtro = filtro;
+        this.resultados = resultados;
+    }
+
+    public String getFiltro() {
+        return filtro;
+    }
+
+    public List<MensajeDTO> getResultados() {
+        return resultados;
+    }
+}

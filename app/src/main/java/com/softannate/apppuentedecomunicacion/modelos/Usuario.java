@@ -1,8 +1,7 @@
 package com.softannate.apppuentedecomunicacion.modelos;
 
-import java.util.Date;
 
-public class Usuario {
+public class Usuario{
     private int id;
     private String nombre;
     private String apellido;
@@ -10,9 +9,10 @@ public class Usuario {
     private String email;
     private String telefono;
     private String domicilio;
-    private Date fechaNacimiento;
+    private String fechaNacimiento;
     private int rolId;
     private String avatar;
+    private String nombreCompleto;
 
     private Rol rol;
 
@@ -27,6 +27,15 @@ public class Usuario {
         this.fechaNacimiento = fechaNacimiento;
         this.rolId = rolId;
         this.avatar = avatar;
+        this.nombreCompleto=nombreCompleto;
+    }
+
+    public String getNombreCompleto() {
+        return nombreCompleto;
+    }
+
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
     }
 
     public Rol getRol() {
@@ -37,12 +46,12 @@ public class Usuario {
         this.rol = rol;
     }
 
-    public Date getFechaNacimiento() {
+    public String getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        fechaNacimiento = fechaNacimiento;
+    public void setFechaNacimiento(String fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
 
     public String getDomicilio() {
@@ -117,4 +126,10 @@ public class Usuario {
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
+
+    @Override
+    public String toString() {
+        return  nombreCompleto;
+    }
+
 }

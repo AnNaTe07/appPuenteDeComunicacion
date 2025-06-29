@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/nav_mensajes">
+
+
+    <fragment
+        android:id="@+id/nav_ubicacion"
+        android:name="com.softannate.apppuentedecomunicacion.ui.main.inicio.UbicacionFragment"
+        android:label="Ubicación"
+        tools:layout="@layout/fragment_ubicacion" >
+        <action
+            android:id="@+id/action_nav_ubicacion_to_inicioFragment"
+            app:destination="@id/nav_inicio" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_perfil"
+        android:name="com.softannate.apppuentedecomunicacion.ui.main.perfil.PerfilFragment"
+        android:label="@string/menu_perfil"
+        tools:layout="@layout/fragment_perfil" />
+
+    <fragment
+        android:id="@+id/nav_modificar_pass"
+        android:name="com.softannate.apppuentedecomunicacion.ui.main.perfil.modificarPass.modificarPass"
+        android:label="Modificar Password"
+        tools:layout="@layout/fragment_modificar_pass">
+        <action
+            android:id="@+id/action_nav_Pass_to_nav_perfil"
+            app:destination="@id/nav_perfil"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_logout"
+        android:name="com.softannate.apppuentedecomunicacion.ui.main.logout.LogoutFragment"
+        android:label="Cerrar Sesión"
+        tools:layout="@layout/fragment_logout" >
+    </fragment>
+    <fragment
+        android:id="@+id/nav_mensajes"
+        android:name="com.softannate.apppuentedecomunicacion.ui.main.mensaje.listaChats.Mensajes"
+        android:label="Mensajes"
+        tools:layout="@layout/fragment_mensajes" >
+    </fragment>
+    <fragment
+        android:id="@+id/nav_inicio"
+        android:name="com.softannate.apppuentedecomunicacion.ui.main.inicio.InicioFragment"
+        android:label="Inicio"
+        tools:layout="@layout/fragment_inicio" />
+    <fragment
+        android:id="@+id/nav_conversacion"
+        android:name="com.softannate.apppuentedecomunicacion.ui.main.mensaje.conversacion.ConversacionFragment"
+        android:label="fragment_conversacion"
+        tools:layout="@layout/fragment_conversacion" >
+        <action
+            android:id="@+id/action_conversacionFragment_to_nav_mensajes"
+            app:destination="@id/nav_mensajes" />
+    </fragment>
+</navigation>

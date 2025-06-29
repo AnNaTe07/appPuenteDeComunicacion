@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- Estilo para los ítems del NavigationView -->
-    <style name="NavigationViewItemFontStyle">
-        <item name="android:fontFamily">@font/adamina</item>
-        <item name="android:textSize">18sp</item>
-    </style>
-</resources>

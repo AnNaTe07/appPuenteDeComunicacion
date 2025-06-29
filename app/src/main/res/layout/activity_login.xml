@@ -5,61 +5,94 @@
     android:id="@+id/nav_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".ui.login.LoginActivity">
 
-    <EditText
-        android:id="@+id/etEmail"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilEmail"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="356dp"
         android:layout_marginEnd="15dp"
-        android:background="@drawable/edit_text"
-        android:backgroundTint="@color/black"
-        android:drawableLeft="@drawable/correo_electronico"
-        android:drawablePadding="10dp"
-        android:drawableTint="@color/colorBase"
-        android:ems="10"
         android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:paddingStart="15dp"
-        android:textAlignment="textStart"
-        android:textColor="#040D47"
-        android:textColorHint="#667580"
-        android:textSize="20sp"
-        android:textStyle="italic"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="@color/colorBase"
+        app:hintTextColor="@color/colorBase"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <EditText
-        android:id="@+id/etPass"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:inputType="textEmailAddress"
+            android:drawablePadding="10dp"
+            android:paddingStart="20dp"
+            android:textColor="#040D47"
+            android:textColorHint="#667580"
+            android:textSize="17sp"
+            android:textStyle="italic"
+            android:textCursorDrawable="@null"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Campo de Password con fondo personalizado y ojo -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilPassword"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="44dp"
         android:layout_marginEnd="15dp"
-        android:background="@drawable/edit_text"
-        android:backgroundTint="@color/black"
-        android:drawableLeft="@drawable/pass"
-        android:drawablePadding="10dp"
-        android:drawableTint="#17879B"
-        android:ems="10"
         android:hint="Password"
-        android:inputType="textWebPassword"
-        android:paddingStart="15dp"
-        android:textAlignment="textStart"
-        android:textColor="#040D47"
         android:textColorHint="#667580"
-        android:textSize="20sp"
-        android:textStyle="italic"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="@color/colorBase"
+        app:endIconMode="password_toggle"
+        app:endIconTint="#0FABAA"
+        app:hintTextColor="@color/colorBase"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/tilEmail">
 
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etPass"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:backgroundTint="@color/colorBase"
+            android:drawablePadding="10dp"
+            android:inputType="textPassword"
+            android:paddingStart="20dp"
+            android:textColor="#040D47"
+            android:textColorHint="#667580"
+            android:textCursorDrawable="@null"
+            android:textSize="17sp"
+            android:textStyle="italic" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <!-- Botón Ingresar -->
+    <Button
+        android:id="@+id/btIngresar"
+        android:layout_width="179dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="@color/colorBase"
+        android:fontFamily="@font/adamina"
+        android:padding="8dp"
+        android:text="Ingresar"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="21sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/tilPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Link Olvidé mi contraseña -->
     <TextView
         android:id="@+id/tvOlvidePass"
         android:layout_width="wrap_content"
@@ -72,13 +105,11 @@
         android:textColor="#3992E0"
         android:textSize="18sp"
         android:textStyle="italic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btIngresar"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Firma inferior -->
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -87,41 +118,22 @@
         android:text="Puente De Comunicación"
         android:textColor="#0F0E0E"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvOlvidePass"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_bias="0.818" />
 
+    <!-- Logo/escudo -->
     <ImageView
         android:id="@+id/imageEscudo"
         android:layout_width="185dp"
         android:layout_height="189dp"
         android:src="@drawable/escudo"
-        app:layout_constraintBottom_toTopOf="@+id/etEmail"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintBottom_toTopOf="@+id/tilEmail"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.507"
         tools:src="@tools:sample/avatars" />
-
-    <Button
-        android:id="@+id/btIngresar"
-        android:layout_width="179dp"
-        android:layout_height="58dp"
-        android:layout_marginTop="40dp"
-        android:background="#17879B"
-        android:fontFamily="@font/adamina"
-        android:padding="8dp"
-        android:text="Ingresar"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="21sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPass" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

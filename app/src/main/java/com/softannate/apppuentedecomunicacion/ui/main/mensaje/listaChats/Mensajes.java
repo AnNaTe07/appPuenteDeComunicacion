@@ -1,0 +1,251 @@
+package com.softannate.apppuentedecomunicacion.ui.main.mensaje.listaChats;
+
+import android.graphics.PorterDuff;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import com.softannate.apppuentedecomunicacion.R;
+import com.softannate.apppuentedecomunicacion.databinding.FragmentMensajesBinding;
+import com.softannate.apppuentedecomunicacion.modelos.dto.MensajeDTO;
+import com.softannate.apppuentedecomunicacion.modelos.dto.ResultadoBusquedaDto;
+import com.softannate.apppuentedecomunicacion.utils.DatePicker;
+import com.softannate.apppuentedecomunicacion.utils.DateUtils;
+import com.softannate.apppuentedecomunicacion.utils.Fecha;
+import com.softannate.apppuentedecomunicacion.utils.FiltroMensajes;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public class Mensajes extends Fragment {
+
+    private MensajesViewModel vmViewModel;
+    private FragmentMensajesBinding binding;
+    private AdapterMensaje adapter;
+    private SearchView sv;
+    private EditText fechaInicio, fechaFin, fechaInicio2, fechaFin2;
+
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        binding = FragmentMensajesBinding.inflate(getLayoutInflater());
+        vmViewModel= new ViewModelProvider(this).get(MensajesViewModel.class);
+        vmViewModel.obtenerMensajes();
+        fechaInicio2 = binding.etFechaInicio2;
+        fechaFin2 = binding.etFechaFin2;
+
+        // ícono invisible al inicio
+        fechaInicio2.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        fechaFin2.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+
+        sv=binding.svBuscarMensaje;
+        fechaInicio = binding.etFechaInicio;
+        fechaFin = binding.etFechaFin;
+        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+
+
+        adapter = new AdapterMensaje( null, new ArrayList<>(), navController);
+        binding.rvMensajes.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+        binding.rvMensajes.setAdapter(adapter);
+
+        vmViewModel.getResultados().observe(getViewLifecycleOwner(), new Observer<ResultadoBusquedaDto>() {
+            @Override
+            public void onChanged(ResultadoBusquedaDto resultadoBusquedaDto) {
+                GridLayoutManager gl= new GridLayoutManager(requireContext(),1,GridLayoutManager.VERTICAL,true);
+
+                binding.rvMensajes.setLayoutManager(gl);
+                binding.rvMensajes.setAdapter(adapter);
+                adapter.setMensajes(resultadoBusquedaDto.getFiltro(), resultadoBusquedaDto.getResultados());
+                adapter.notifyDataSetChanged();
+            }
+        });
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+               // vmViewModel.buscarMensajes(query, null, null);
+                ejecutarBusqueda();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //Fecha.buscarConFechas(newText, fechaInicio, fechaFin, vmViewModel);
+                ejecutarBusqueda();
+
+                return true;
+            }
+        });
+
+        fechaInicio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Mostrar el DatePicker para la fecha de inicio, limitando fechas posteriores a la fecha de fin
+                DatePicker.showFechaInicioPicker(requireActivity(), fechaInicio);
+            }
+        });
+
+
+        fechaFin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Mostrar el DatePicker para la fecha de fin, limitando fechas anteriores a la fecha de inicio
+                DatePicker.showFechaFinPicker(requireActivity(), fechaFin);
+            }
+        });
+
+
+        // TextWatcher al campo de Fecha de Inicio
+        fechaInicio.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                // Llamo a la búsqueda con las fechas y el texto del SearchView
+                String searchText = sv.getQuery().toString();
+               // Fecha.buscarConFechas(searchText, fechaInicio, fechaFin, vmViewModel);
+                ejecutarBusqueda();
+
+                fechaInicio2.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_clear, 0); // Muestra el ícono
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
+        // TextWatcher al campo de Fecha de Fin
+        fechaFin.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+
+                // Llamada a la búsqueda con las fechas y el texto del SearchView
+                String searchText = sv.getQuery().toString();
+               // Fecha.buscarConFechas(searchText, fechaInicio, fechaFin, vmViewModel);
+                ejecutarBusqueda();
+                fechaFin2.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_clear, 0); // Muestra el ícono
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
+        // Borra el texto de fechaInicio cuando se toca el segundo EditText
+        fechaInicio2.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                FiltroMensajes.limpiarFiltros(fechaInicio, null);
+                DatePicker.resetFechaInicio();
+                String searchText = sv.getQuery().toString();
+               // Fecha.buscarConFechas(searchText, fechaInicio, fechaFin, vmViewModel);
+                ejecutarBusqueda();
+                fechaInicio2.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                return true;
+            }
+        });
+
+        // Borra el texto de fechaFin cuando se toca el segundo EditText
+        fechaFin2.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // Limpiar el texto de fechaFin y aplicar los filtros
+                FiltroMensajes.limpiarFiltros(null, fechaFin);
+                DatePicker.resetFechaFin();
+                String searchText = sv.getQuery().toString();
+               // Fecha.buscarConFechas(searchText, fechaInicio, fechaFin, vmViewModel);
+                ejecutarBusqueda();
+                fechaFin2.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                return true;
+            }
+        });
+
+
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+        //para cambiar el color a la lupa
+         ImageView searchIcon =(ImageView)sv.findViewById(androidx.appcompat.R.id.search_mag_icon);
+         searchIcon.setColorFilter(ContextCompat.getColor(requireContext(),R.color.colorLupa), PorterDuff.Mode.SRC_IN);
+
+        //color del sv
+        EditText searchEditText = (EditText) sv.findViewById(androidx.appcompat.R.id.search_src_text);
+        searchEditText.setTextColor(ContextCompat.getColor(requireContext(), R.color.black));
+        //color clearIcon
+        ImageView clearIcon = (ImageView) sv.findViewById(androidx.appcompat.R.id.search_close_btn);
+        clearIcon.setColorFilter(ContextCompat.getColor(requireContext(), R.color.black));
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        vmViewModel = new ViewModelProvider(this).get(MensajesViewModel.class);
+        // TODO: Use the ViewModel
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Guardar el texto de búsqueda
+        String searchText = sv.getQuery().toString();
+        // Reaplicar el filtro de búsqueda
+
+        if (fechaInicio.getText().toString().isEmpty()) {
+            fechaInicio2.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }
+        if(fechaFin.getText().toString().isEmpty()) {
+            fechaFin2.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }
+
+        // Aplico el filtro de fechas
+       // Fecha.buscarConFechas(searchText, fechaInicio, fechaFin, vmViewModel);
+        ejecutarBusqueda();
+
+        // Refrescar el Adapter y RecyclerView
+        adapter.notifyDataSetChanged();
+    }
+    private void ejecutarBusqueda() {
+
+        String texto = sv.getQuery() != null ? sv.getQuery().toString().trim() : "";
+        String fechaInicioStr = fechaInicio.getText().toString();
+        String fechaFinStr = fechaFin.getText().toString();
+
+        Date inicio = DateUtils.parseFechaDesdeTexto(fechaInicioStr);
+        Date fin = DateUtils.parseFechaDesdeTexto(fechaFinStr);
+
+        boolean hayFiltros = !texto.isEmpty() || inicio != null || fin != null;
+
+        if (hayFiltros) {
+            vmViewModel.buscarMensajes(texto, inicio, fin);
+        } else {
+            vmViewModel.obtenerMensajes(); // Sin filtros → lista original
+        }
+    }
+
+}
+
+

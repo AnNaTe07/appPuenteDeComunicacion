@@ -1,0 +1,149 @@
+package com.softannate.apppuentedecomunicacion.ui.main.mensaje.conversacion;
+
+import android.graphics.Color;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+import com.softannate.apppuentedecomunicacion.R;
+import com.softannate.apppuentedecomunicacion.data.local.SpManager;
+import com.softannate.apppuentedecomunicacion.modelos.dto.MensajeDTO;
+import com.softannate.apppuentedecomunicacion.utils.DateUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ConversacionAdapter extends RecyclerView.Adapter<ConversacionAdapter.MensajeViewHolder> {
+    private List<MensajeDTO> mensajes;
+
+    public ConversacionAdapter(List<MensajeDTO> mensajes) {
+        this.mensajes = mensajes;
+    }
+
+    public void setListaMensajes(List<MensajeDTO> mensajes) {
+        if (mensajes == null) {
+            this.mensajes = new ArrayList<>();
+        } else {
+            this.mensajes = mensajes;
+        }
+        notifyDataSetChanged();
+    }
+
+    @NonNull
+    @Override
+    public MensajeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mensaje, parent, false);
+        return new MensajeViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull MensajeViewHolder holder, int position) {
+        MensajeDTO mensaje = mensajes.get(position);
+        String fechaCompleta = mensaje.getFecha_Hora();
+
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) holder.layout.getLayoutParams();
+        params.gravity = (mensaje.getEmisorId() == Integer.parseInt(SpManager.getId(holder.itemView.getContext()))) ? Gravity.RIGHT : Gravity.LEFT;
+
+        int fondo = (mensaje.getEmisorId() == Integer.parseInt(SpManager.getId(holder.itemView.getContext()))) ? R.drawable.leido : R.drawable.no_leido;
+        holder.layout.setBackgroundResource(fondo);
+
+        DisplayMetrics displayMetrics = holder.itemView.getContext().getResources().getDisplayMetrics();
+        int maxWidth = (int) (displayMetrics.widthPixels * 0.75);
+
+        holder.layout.post(() -> {
+            holder.layout.getLayoutParams().width = maxWidth;
+            holder.layout.requestLayout();
+        });
+
+        params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        holder.layout.setLayoutParams(params);
+
+        if(fechaCompleta!=null){
+            String[] partes = fechaCompleta.split("T");
+
+            String fecha = DateUtils.formatearFecha(fechaCompleta);//"dd/MM/yyyy"
+            String hora = partes[1].substring(0, 5); // "HH:mm"
+
+            holder.layout.setVisibility(View.VISIBLE);
+            holder.hora.setText(hora + " hs");
+
+            if(position==0 || !fecha.equals(getFechaAnterior(position))){
+                holder.fecha.setVisibility(View.VISIBLE);
+                holder.fecha.setText(fecha);
+            }else{
+                holder.fecha.setVisibility(View.GONE);
+            }
+
+            int estado=mensaje.getEstadoId();
+            Log.d("ConversacionAdapter", "cantidad: "+estado);
+
+            if(mensaje.getEmisorId()==Integer.parseInt(SpManager.getId(holder.itemView.getContext()))) {//es mi mensaje{
+                if (estado == 2) {//no leido
+                    holder.check1.setVisibility(View.VISIBLE);
+                    holder.check2.setVisibility(View.VISIBLE);
+                    holder.check1.setColorFilter(Color.GRAY);
+                    holder.check2.setColorFilter(Color.GRAY);
+                } else if (estado == 3) {//leido
+                    //int color = ContextCompat.getColor(holder.itemView.getContext(), R.color.colorBase);
+
+                    holder.check1.setVisibility(View.VISIBLE);
+                    holder.check2.setVisibility(View.VISIBLE);
+                    holder.check1.setColorFilter(Color.rgb(79, 195, 247));
+                    holder.check2.setColorFilter(Color.rgb(79, 195, 247));
+                } else if (estado == 1) {//enviado
+                    holder.check1.setVisibility(View.VISIBLE);
+                    holder.check1.setColorFilter(Color.GRAY);
+                }
+            }else{
+                holder.check1.setVisibility(View.GONE);
+                holder.check2.setVisibility(View.GONE);
+            }
+
+            holder.contenido.setText(mensaje.getContenido());
+            holder.categoria.setText(mensaje.getCategoria());
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return  (mensajes != null) ? mensajes.size() : 0;
+    }
+
+    private String getFechaAnterior(int position) {
+        if (position > 0) {
+            String fechaAnteriorCompleta = mensajes.get(position - 1).getFecha_Hora(); // String, no Date
+
+            // Extraer solo la parte de la fecha
+            if (fechaAnteriorCompleta != null && fechaAnteriorCompleta.contains("T")) {
+                return fechaAnteriorCompleta.split("T")[0]; // "2025-06-18"
+            }
+        }
+        return "";
+    }
+
+    public static class MensajeViewHolder extends RecyclerView.ViewHolder {
+        LinearLayout layout;
+        TextView contenido, hora, fecha, categoria;
+        ImageView foto, check1, check2;
+
+        public MensajeViewHolder(View view) {
+            super(view);
+            layout = view.findViewById(R.id.layoutMensaje);
+            contenido=view.findViewById(R.id.textoMensajeDocente);
+            hora=view.findViewById(R.id.horaMensajeDocente);
+            fecha=view.findViewById(R.id.tvFecha);
+            categoria=view.findViewById(R.id.categoria);
+            foto=view.findViewById(R.id.fotoUsuario);
+            check1=view.findViewById(R.id.check1);
+            check2=view.findViewById(R.id.check2);
+        }
+    }
+}

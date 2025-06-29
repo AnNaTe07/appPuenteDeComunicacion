@@ -1,133 +1,130 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_inicio"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.inicio.InicioFragment" >
+    tools:context=".ui.main.inicio.InicioFragment">
 
-
+    <!-- Imagen adaptable, ocupa 30% de altura -->
     <ImageView
         android:id="@+id/imageFrente"
-        android:layout_width="417dp"
-        android:layout_height="211dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/frente"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.03"
-        tools:src="@tools:sample/backgrounds/scenic" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.3" />
 
+    <!-- Texto principal -->
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/adamina"
-        android:text="Escuela Técnica N°37 "
+        android:text="Escuela Técnica N°37"
         android:textAlignment="center"
         android:textColor="#0F0E0E"
         android:textSize="23sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        android:fontFamily="@font/adamina"
+        app:layout_constraintTop_toBottomOf="@id/imageFrente"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageFrente" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
 
+    <!-- Subtítulo -->
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:fontFamily="@font/adamina"
         android:text="Ing. Germán Avé Lallemant"
         android:textAlignment="center"
         android:textColor="#0F0E0E"
         android:textSize="23sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
+        android:fontFamily="@font/adamina"
+        app:layout_constraintTop_toBottomOf="@id/textView2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="4dp" />
 
+    <!-- Texto fijo para teléfono -->
+    <EditText
+        android:id="@+id/editTextTextMultiLine"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="Teléfono : 4452000 - internos: Dirección (6532) / Regencia (6533) / Secretaria (5735)"
+        android:fontFamily="@font/adamina"
+        android:textColor="#0F0E0E"
+        android:inputType="none"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        app:layout_constraintTop_toBottomOf="@id/textView3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp" />
+
+    <!-- Botón Llamar -->
+
+    <!-- Botón Ubicación -->
+
+    <!-- Botón Facebook -->
     <TextView
         android:id="@+id/tvLlamada"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="45dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:drawableLeft="@drawable/telefono"
-        android:drawablePadding="30dp"
+        android:drawablePadding="16dp"
         android:fontFamily="@font/adamina"
         android:gravity="center_vertical|start"
-        android:paddingStart="20dp"
+        android:paddingStart="16dp"
         android:text="Llamar a la escuela"
-        android:textAlignment="viewStart"
         android:textColor="#0F0E0E"
         android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextTextMultiLine"
+        app:layout_constraintBottom_toTopOf="@id/tvUbicacion" />
 
     <TextView
         android:id="@+id/tvUbicacion"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="45dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:drawableLeft="@drawable/location"
-        android:drawablePadding="30dp"
+        android:drawablePadding="16dp"
         android:fontFamily="@font/adamina"
         android:gravity="center_vertical|start"
-        android:paddingStart="20dp"
+        android:paddingStart="16dp"
         android:text="Ubicación"
-        android:textAlignment="viewStart"
         android:textColor="#0F0E0E"
         android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvLlamada" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvLlamada"
+        app:layout_constraintBottom_toTopOf="@id/tvFacebook" />
 
     <TextView
         android:id="@+id/tvFacebook"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="45dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:drawableLeft="@drawable/facebook"
-        android:drawablePadding="30dp"
+        android:drawablePadding="16dp"
         android:fontFamily="@font/adamina"
         android:gravity="center_vertical|start"
-        android:paddingStart="20dp"
-        android:text="Ir a facebook"
-        android:textAlignment="viewStart"
+        android:paddingStart="16dp"
+        android:text="Ir a Facebook"
         android:textColor="#0F0E0E"
         android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvUbicacion"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvUbicacion"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_chainStyle="spread" />
 
-    <EditText
-        android:id="@+id/editTextTextMultiLine"
-        android:layout_width="355dp"
-        android:layout_height="101dp"
-        android:layout_marginTop="41dp"
-        android:background="@android:color/transparent"
-        android:ems="10"
-        android:fontFamily="@font/adamina"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:text="Teléfono : 4452000 - internos: Dirección (6532) / Regencia (6533) / Secretaria (5735)"
-        android:textColor="#0F0E0E"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
