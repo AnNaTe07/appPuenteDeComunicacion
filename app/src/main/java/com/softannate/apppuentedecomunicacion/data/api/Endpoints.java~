@@ -61,7 +61,7 @@ public interface Endpoints {
     @GET("mensaje/{receptorId}")
     Call<List<MensajeDTO>> conversacionConAlumno(@Path("receptorId") int receptorId,@Query("alumnoId") int alumnoId );
 
-    @GET("mensaje/{receptorId}")
+    @GET("conversacion/{receptorId}")
     Call<List<MensajeDTO>> conversacionAjenaConAlumno(
             @Path("receptorId") int receptorId,
             @Query("alumnoId") int alumnoId,

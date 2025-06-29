@@ -30,7 +30,7 @@ public class ConversacionFragment extends FragmentNuevoConversacion {
     private RecyclerView rvConversaciones;
     private List<MensajeDTO> listaMensajes;
     private static final int TIEMPO_ESPERA = 4000;
-
+/*
     public static ConversacionFragment newInstance(String avatar,String userNombre, int userId, int alumnoID, String alumnoNombre) {
         ConversacionFragment fragment = new ConversacionFragment();
         Bundle args= new Bundle();
@@ -42,6 +42,8 @@ public class ConversacionFragment extends FragmentNuevoConversacion {
         fragment.setArguments(args);
         return  fragment;
     }
+
+ */
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -60,14 +62,15 @@ public class ConversacionFragment extends FragmentNuevoConversacion {
 
         //inicializo lista de mensajes
         listaMensajes=new ArrayList<>();
-        adapter= new ConversacionAdapter(listaMensajes);
+        //adapter = new ConversacionAdapter(listaMensajes, vmConversacion.getIdVisual());
+
+       // adapter= new ConversacionAdapter(listaMensajes);
         LinearLayoutManager llConversaciones= new LinearLayoutManager(requireContext());
         llConversaciones.setStackFromEnd(true);
         llConversaciones.setReverseLayout(false);
         rvConversaciones= binding.recyclerMensajes;
         rvConversaciones.setLayoutManager(llConversaciones);
         rvConversaciones.setAdapter(adapter);
-
 
         return binding.getRoot();
     }
@@ -78,6 +81,8 @@ public class ConversacionFragment extends FragmentNuevoConversacion {
        // this.tvCategoria = binding.layoutEscribir.tvCategoria;
        // this.editMensaje = binding.layoutEscribir.editMensaje;
 
+        Bundle args = getArguments();
+        if(args == null) return;
 
         vmConversacion.getLimpiar().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
@@ -102,18 +107,25 @@ public class ConversacionFragment extends FragmentNuevoConversacion {
                 .into(binding.fotoUsuario);
 
 
-        int alumnoId= getArguments().getInt("alumnoId");
-        int userId= getArguments().getInt("userId");
-        vmConversacion.setIds( userId,alumnoId);
-        Log.d("ViewModelResponse1", alumnoId + " " + userId);
+       // int alumnoId= getArguments().getInt("alumnoId");
+        //int userId= getArguments().getInt("userId");
+        //vmConversacion.setIds( userId,alumnoId);
+        //Log.d("ViewModelResponse1", alumnoId + " " + userId);
 
+        vmConversacion.inicializarDesdeBundle(requireContext(), args);
         vmConversacion.cargarMensajes();
         vmConversacion.getListaMensaje().observe(getViewLifecycleOwner(), new Observer<List<MensajeDTO>>() {
           @Override
           public void onChanged(List<MensajeDTO> mensajeDTOS) {
-              listaMensajes.clear();
+              if (adapter == null) {
+                  adapter = new ConversacionAdapter(mensajeDTOS, vmConversacion.getIdVisual());
+                  rvConversaciones.setAdapter(adapter);
+              } else {
+                  adapter.setListaMensajes(mensajeDTOS);
+              } listaMensajes.clear();
+
               listaMensajes.addAll(mensajeDTOS);
-              adapter.setListaMensajes(mensajeDTOS);
+              //adapter.setListaMensajes(mensajeDTOS);
               rvConversaciones.scrollToPosition(listaMensajes.size()-1);//para mostrar el ultimo mensaje
           }
       });
@@ -122,8 +134,6 @@ public class ConversacionFragment extends FragmentNuevoConversacion {
             vmConversacion.marcarMensajesComoLeidos();
             Log.d("ViewModelResponse2", "mensajes marcados como leidos");
         }, TIEMPO_ESPERA);
-
-
 
     }
 

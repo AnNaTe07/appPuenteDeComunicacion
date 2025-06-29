@@ -1,12 +1,16 @@
 package com.softannate.apppuentedecomunicacion.ui.main.mensaje.conversacion;
 
 import android.app.Application;
+import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.softannate.apppuentedecomunicacion.base.ViewModelConversacionNuevo;
+import com.softannate.apppuentedecomunicacion.data.local.SpManager;
 import com.softannate.apppuentedecomunicacion.modelos.dto.MensajeDTO;
 
+import java.io.Console;
 import java.util.Date;
 import java.util.List;
 import retrofit2.Call;
@@ -16,26 +20,61 @@ import retrofit2.Response;
 public class ConversacionViewModel extends ViewModelConversacionNuevo {
 
     //private MutableLiveData<List<MensajeDTO>> listaMensajes = new MutableLiveData<>();
-    private int alumnoId, usuarioId;
+    private int alumnoId, usuarioId, emisorId, receptorId;
+    private int idVisual;
+
 
     public ConversacionViewModel(@NonNull Application application) {
         super(application);
         obtenerCategorias();
     }
+
+    public int getIdVisual() {
+        return idVisual;
+    }
     public void setIds(int usuarioId, int alumnoId) {
         this.usuarioId = usuarioId;
         this.alumnoId = alumnoId;
+        this.idVisual = usuarioId;
         cargarMensajes();
+    }
+    public void setIdsParaDirector(int emisorId, int receptorId, int alumnoId) {
+        this.emisorId = emisorId;
+        this.receptorId = receptorId;
+        this.alumnoId = alumnoId;
+        this.idVisual = emisorId;
+
     }
 
     public void cargarMensajes(){
         Call<List<MensajeDTO>> call;
+        /*
         if (alumnoId == 0) {
             call= endpoints.conversacion(usuarioId);
         } else {
             call = endpoints.conversacionConAlumno(usuarioId, alumnoId);
         }
 
+         */
+        if (emisorId != 0 && receptorId != 0 && usuarioId != emisorId && usuarioId != receptorId) {
+            // 👀 Director viendo una conversación ajena
+            call = endpoints.conversacionAjenaConAlumno( receptorId, alumnoId,emisorId);
+            Log.d("ConversacionViewModel1ajena", "emisorId: " + emisorId + " receptorId: " + receptorId + " alumnoId: " + alumnoId);
+
+        } else {
+            // 👤 Usuario (o director) participando en la conversación
+            if (alumnoId == 0) {
+                call = endpoints.conversacion(usuarioId);
+                Log.d("ConversacionViewModel1alumno0", "usuarioId: " + usuarioId + " alumnoId: " + alumnoId);
+
+            } else {
+                call = endpoints.conversacionConAlumno(usuarioId, alumnoId);
+                Log.d("ConversacionViewModel1normal", "usuarioId: " + usuarioId + " alumnoId: " + alumnoId);
+
+            }
+        }
+
+        Log.d("ConversacionViewModel1", "emisorId: " + emisorId + " receptorId: " + receptorId + " alumnoId: " + alumnoId);
        // Call<List<MensajeDTO>> call = endpoints.conversacion(usuarioId, alumnoId);
         call.enqueue(new Callback<List<MensajeDTO>>() {
             @Override
@@ -78,6 +117,53 @@ public class ConversacionViewModel extends ViewModelConversacionNuevo {
             }
         });
     }
+    /*
+    public void inicializarDesdeBundle(Context context, Bundle args) {
+        String rol = SpManager.getRol(context);
+        int alumnoId = args.getInt("alumnoId");
+        int emisorId = args.getInt("emisorId", -1);
+        int receptorId = args.getInt("receptorId", -1);
+        int userIdLogueado = Integer.parseInt(SpManager.getId(context));
+
+        if ("2".equals(rol) && emisorId != -1 && receptorId != -1 && userIdLogueado != emisorId && userIdLogueado != receptorId) {
+            // Director viendo conversación ajena
+            setIdsParaDirector(emisorId, receptorId, alumnoId);
+        } else {
+            // Cualquier otro caso: usuario participando
+            int otroId = (userIdLogueado == emisorId) ? receptorId : emisorId;
+            setIds(otroId, alumnoId);
+        }
+    }
+
+     */
+    public void inicializarDesdeBundle(Context context, Bundle args) {
+        int alumnoId = args.getInt("alumnoId");
+        int emisorId = args.getInt("emisorId", -1);
+        int receptorId = args.getInt("receptorId", -1);
+        int userLogueadoId = Integer.parseInt(SpManager.getId(context));
+        String rol = SpManager.getRol(context);
+
+        if (emisorId == -1 || receptorId == -1) {
+            // 🔸 Fallback (por si viene solo un userId viejo)
+            int userId = args.getInt("userId");
+            setIds(userId, alumnoId);
+            return;
+        }
+
+        if (userLogueadoId == emisorId || userLogueadoId == receptorId) {
+            // ✅ Caso 1 o 2: usuario (común o director) participa
+            int otro = (userLogueadoId == emisorId) ? receptorId : emisorId;
+            setIds(otro, alumnoId);
+        } else if ("2".equals(rol)) {
+            // ✅ Caso 3: director viendo conversación ajena
+            setIdsParaDirector(emisorId, receptorId, alumnoId);
+        } else {
+            // ❌ Esto nunca debería pasar (usuario no autorizado a ver conversación ajena)
+            Log.e("Conversacion", "Usuario sin permisos para esta conversación.");
+        }
+    }
+
+
 /*
     public void buscarMensajes(String query, Date fechaInicio, Date fechaFin) {
       Call<List<MensajeDTO>> call = endpoints.buscar(query, fechaInicio, fechaFin);

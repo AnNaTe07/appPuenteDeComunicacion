@@ -102,42 +102,45 @@ public class AdapterMensaje extends RecyclerView.Adapter<AdapterMensaje.ViewHold
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                    MensajeDTO mensaje = mensajes.get(getAdapterPosition());
-                    int userId, alumnoId;
-                    String userNombre,avatar,alumnoNombre;
-                    Bundle bundle = new Bundle();
-                   // bundle.putSerializable("mensaje1", mensaje);
-                    if(mensaje.getReceptorId() == Integer.parseInt(SpManager.getId(itemView.getContext()))) {
-                        userId= mensaje.getEmisorId();
-                        userNombre=mensaje.getEmisorNombre();
-                        //avatar=mensaje.getEmisorAvatar();
-                    }else{
-                       userId= mensaje.getReceptorId();
-                       userNombre=mensaje.getReceptorNombre();
-                       //avatar=mensaje.getReceptorAvatar();
-                    }
-                    avatar=mensaje.getAvatar();
-                    bundle.putInt("userId",userId);
-                    bundle.putString("userNombre",userNombre);
-                    bundle.putString("avatar",avatar);
-                    alumnoId=mensaje.getAlumnoId();
-                    if(alumnoId==0){
-                        alumnoNombre="";
-                    }else {
-                        alumnoNombre="("+mensaje.getAlumnoNombre()+")";
-                    }
-                    bundle.putString("alumnoNombre",alumnoNombre);
-                    bundle.putInt("alumnoId",alumnoId);
-                            // Log.d("Adapter", "Mensaje seleccionado: " + userId);
-                    Log.d("Adapter", "Mensaje seleccionado: " + userId);
-                    Log.d("Adapter", "Mensaje seleccionado: " + userNombre);
-                    Log.d("Adapter", "Mensaje seleccionado: " + avatar);
-                    Log.d("Adapter", "Mensaje seleccionado: " + alumnoId);
+                    public void onClick(View view) {
+                        MensajeDTO mensaje = mensajes.get(getAdapterPosition());
+                        Context context = itemView.getContext();
+                        int userLogueadoId = Integer.parseInt(SpManager.getId(context));
+                        String rol = SpManager.getRol(context);
 
-                    navController.navigate(R.id.nav_conversacion, bundle);
-                }
-            });
+                        int alumnoId = mensaje.getAlumnoId();
+                        String alumnoNombre = (alumnoId == 0) ? "" : "(" + mensaje.getAlumnoNombre() + ")";
+
+                        String avatar = obtenerAvatarParaMostrar(mensaje, context);
+                        String userNombre = obtenerNombreParaMostrar(mensaje, context);
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("avatar", avatar);
+                        bundle.putString("userNombre", userNombre);
+                        bundle.putString("alumnoNombre", alumnoNombre);
+                        bundle.putInt("alumnoId", alumnoId);
+
+                        // ⚠️ SIEMPRE PASAMOS LOS DOS PARTICIPANTES
+                        bundle.putInt("emisorId", mensaje.getEmisorId());
+                        bundle.putInt("receptorId", mensaje.getReceptorId());
+
+                        // Solo agregamos userId si el usuario participa (para el fragment)
+                        if (!("2".equals(rol) && userLogueadoId != mensaje.getEmisorId() && userLogueadoId != mensaje.getReceptorId())) {
+                            int otroUserId = (mensaje.getReceptorId() == userLogueadoId)
+                                    ? mensaje.getEmisorId()
+                                    : mensaje.getReceptorId();
+                            bundle.putInt("userId", otroUserId);
+                        }
+
+                        Log.d("Adapter", "EmisorId: " + mensaje.getEmisorId());
+                        Log.d("Adapter", "ReceptorId: " + mensaje.getReceptorId());
+                        Log.d("Adapter", "AlumnoId: " + alumnoId);
+                        Log.d("Adapter", "Avatar: " + avatar);
+                        Log.d("Adapter", "Nombre mostrado: " + userNombre);
+
+                        navController.navigate(R.id.nav_conversacion, bundle);
+                    }
+                });
         }
     }
     private String obtenerNombreParaMostrar(MensajeDTO mensaje, Context context) {

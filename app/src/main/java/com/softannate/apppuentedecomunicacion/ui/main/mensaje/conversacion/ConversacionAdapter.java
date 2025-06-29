@@ -23,10 +23,17 @@ import java.util.List;
 
 public class ConversacionAdapter extends RecyclerView.Adapter<ConversacionAdapter.MensajeViewHolder> {
     private List<MensajeDTO> mensajes;
+    private int idVisual;
 
-    public ConversacionAdapter(List<MensajeDTO> mensajes) {
+    public ConversacionAdapter(List<MensajeDTO> mensajes, int idVisual) {
         this.mensajes = mensajes;
+        this.idVisual = idVisual;
     }
+
+
+   // public ConversacionAdapter(List<MensajeDTO> mensajes) {
+   //     this.mensajes = mensajes;
+  //  }
 
     public void setListaMensajes(List<MensajeDTO> mensajes) {
         if (mensajes == null) {
@@ -49,10 +56,12 @@ public class ConversacionAdapter extends RecyclerView.Adapter<ConversacionAdapte
         MensajeDTO mensaje = mensajes.get(position);
         String fechaCompleta = mensaje.getFecha_Hora();
 
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) holder.layout.getLayoutParams();
-        params.gravity = (mensaje.getEmisorId() == Integer.parseInt(SpManager.getId(holder.itemView.getContext()))) ? Gravity.RIGHT : Gravity.LEFT;
+        boolean usuarioLogueado = mensaje.getEmisorId() == idVisual;
 
-        int fondo = (mensaje.getEmisorId() == Integer.parseInt(SpManager.getId(holder.itemView.getContext()))) ? R.drawable.leido : R.drawable.no_leido;
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) holder.layout.getLayoutParams();
+        params.gravity = usuarioLogueado ? Gravity.LEFT : Gravity.RIGHT;
+
+        int fondo = usuarioLogueado ? R.drawable.no_leido : R.drawable.leido;
         holder.layout.setBackgroundResource(fondo);
 
         DisplayMetrics displayMetrics = holder.itemView.getContext().getResources().getDisplayMetrics();
@@ -65,8 +74,10 @@ public class ConversacionAdapter extends RecyclerView.Adapter<ConversacionAdapte
 
         params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
         holder.layout.setLayoutParams(params);
+        Log.d("DEBUG_VIEW", "Mensaje EmisorId: " + mensaje.getEmisorId() + ", ID Visual: " + idVisual);
 
-        if(fechaCompleta!=null){
+
+        if(fechaCompleta!=null) {
             String[] partes = fechaCompleta.split("T");
 
             String fecha = DateUtils.formatearFecha(fechaCompleta);//"dd/MM/yyyy"
@@ -75,18 +86,21 @@ public class ConversacionAdapter extends RecyclerView.Adapter<ConversacionAdapte
             holder.layout.setVisibility(View.VISIBLE);
             holder.hora.setText(hora);
 
-            if(position==0 || !fecha.equals(getFechaAnterior(position))){
+            if (position == 0 || !fecha.equals(getFechaAnterior(position))) {
                 holder.fecha.setVisibility(View.VISIBLE);
                 holder.fecha.setText(fecha);
-            }else{
+            } else {
                 holder.fecha.setVisibility(View.GONE);
             }
 
-            int estado=mensaje.getEstadoId();
-            Log.d("ConversacionAdapter", "cantidad: "+estado);
+            int estado = mensaje.getEstadoId();
+            Log.d("ConversacionAdapter", "cantidad: " + estado);
+            String rol = SpManager.getRol(holder.itemView.getContext());
 
-            if(mensaje.getEmisorId()==Integer.parseInt(SpManager.getId(holder.itemView.getContext()))) {//es mi mensaje{
-                if (estado == 2) {//no leido
+            int idLogueado = Integer.parseInt(SpManager.getId(holder.itemView.getContext()));
+
+            if (mensaje.getEmisorId() != idVisual || ("2".equals(rol) && idLogueado != mensaje.getEmisorId() && idLogueado != mensaje.getReceptorId())) {
+               if (estado == 2) {//no leido
                     holder.check1.setVisibility(View.VISIBLE);
                     holder.check2.setVisibility(View.VISIBLE);
                     holder.check1.setColorFilter(Color.GRAY);
@@ -102,11 +116,10 @@ public class ConversacionAdapter extends RecyclerView.Adapter<ConversacionAdapte
                     holder.check1.setVisibility(View.VISIBLE);
                     holder.check1.setColorFilter(Color.GRAY);
                 }
-            }else{
+            } else {
                 holder.check1.setVisibility(View.GONE);
                 holder.check2.setVisibility(View.GONE);
             }
-
             holder.contenido.setText(mensaje.getContenido());
             holder.categoria.setText(mensaje.getCategoria());
         }
