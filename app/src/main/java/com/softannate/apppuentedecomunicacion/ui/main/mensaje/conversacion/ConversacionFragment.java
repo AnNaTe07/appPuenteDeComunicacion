@@ -68,7 +68,6 @@ public class ConversacionFragment extends FragmentNuevoConversacion {
         //inicializo lista de mensajes
         listaMensajes=new ArrayList<>();
         //adapter = new ConversacionAdapter(listaMensajes, vmConversacion.getIdVisual());
-
        // adapter= new ConversacionAdapter(listaMensajes);
         LinearLayoutManager llConversaciones= new LinearLayoutManager(requireContext());
         llConversaciones.setStackFromEnd(true);
