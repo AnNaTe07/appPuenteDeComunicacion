@@ -132,15 +132,14 @@ public class ConversacionAdapter extends RecyclerView.Adapter<ConversacionAdapte
 
     private String getFechaAnterior(int position) {
         if (position > 0) {
-            String fechaAnteriorCompleta = mensajes.get(position - 1).getFecha_Hora(); // String, no Date
-
-            // Extraer solo la parte de la fecha
+            String fechaAnteriorCompleta = mensajes.get(position - 1).getFecha_Hora();
             if (fechaAnteriorCompleta != null && fechaAnteriorCompleta.contains("T")) {
-                return fechaAnteriorCompleta.split("T")[0]; // "2025-06-18"
+                return DateUtils.formatearFecha(fechaAnteriorCompleta);
             }
         }
         return "";
     }
+
 
     public static class MensajeViewHolder extends RecyclerView.ViewHolder {
         LinearLayout layout;
