@@ -50,7 +50,7 @@
         app:boxBackgroundMode="outline"
         app:boxStrokeColor="@color/colorBase"
         app:endIconMode="password_toggle"
-        app:endIconTint="@color/black"
+        app:endIconTint="#0FABAA"
         app:hintTextColor="@color/colorBase"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
