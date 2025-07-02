@@ -14,6 +14,7 @@ import com.softannate.apppuentedecomunicacion.modelos.RestablecerPass;
 import com.softannate.apppuentedecomunicacion.modelos.Rol;
 import com.softannate.apppuentedecomunicacion.modelos.TipoActividad;
 import com.softannate.apppuentedecomunicacion.modelos.UsuarioDto;
+import com.softannate.apppuentedecomunicacion.modelos.dto.PreferenciaNotificacionDto;
 import com.softannate.apppuentedecomunicacion.modelos.dto.RefreshTokenDto;
 import com.softannate.apppuentedecomunicacion.modelos.dto.UserUpdateDto;
 import java.util.List;
@@ -83,9 +84,13 @@ public interface Endpoints {
     @GET("usuario/profile")
     Call<UsuarioDto> profile();
 
-    //Update
+    //Update - Funcionando
     @PUT("usuario/update")
     Call<UsuarioDto> update(@Body UserUpdateDto usuario);
+
+    //Preferencias de Notificacion - Funcionando
+    @POST("notificacion/actualizar")
+    Call<Void> actualizarNotificacion(@Body PreferenciaNotificacionDto dto);
 
     //Niveles
     @GET("nivel")
@@ -110,9 +115,7 @@ public interface Endpoints {
     //Restablecer Pass
     @POST("usuario/restablecerPass")
     Call<ResponseBody> restablecerPass(@Body RestablecerPass dto, @Header("Authorization") String token);
-
-
-
+    
     //Avatar
     @PATCH("usuario/avatar")
     @Multipart
@@ -130,18 +133,6 @@ public interface Endpoints {
     //Alumnos
     @GET("alumno/tutor")
     Call<List<Alumno>> alumnos(@Header("Authorization") String token);
-
-    //Mensajes
-
-    @GET("mensaje/{id}/respuestas")
-    Call<List<MensajeDTO>>  respuestas(@Header("Authorization") String token, @Path("id") int id);
-
-    @GET("mensaje/conversacion/{mensajeId}/{usuarioId}")
-    Call<List<MensajeDTO>> conversacion(@Header("Authorization") String token, @Path("mensajeId") int mensajeId, @Path("usuarioId") int usuarioId);
-
-    @GET("mensaje/destinatarios/{alumnoId}")
-    Call<List<UsuarioDto>> destinatarios(@Header("Authorization") String token, @Path("alumnoId") int alumnoId);
-
 }
 
 

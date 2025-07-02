@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -85,6 +86,9 @@ public class PerfilFragment extends Fragment {
         vmPerfil.getMUsuario().observe(getViewLifecycleOwner(), new Observer<UsuarioDto>() {
             @Override
             public void onChanged(UsuarioDto usuario) {
+                bindingPerfil.cbEmailNotifications.setChecked(usuario.isNotificaPorEmail());
+                bindingPerfil.cbNotificationPush.setChecked(usuario.isNotificaPorPush());
+
                 etNombre.setText(usuario.getNombreCompleto());
                 etDocumento.setText(String.valueOf(usuario.getDocumento()));
                 etDomicilio.setText(usuario.getDomicilio());
@@ -102,7 +106,19 @@ public class PerfilFragment extends Fragment {
                         .into(fotoPerfil);
             }
         });
+        bindingPerfil.cbEmailNotifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                vmPerfil.notificacion(1, isChecked);
+            }
+        });
 
+        bindingPerfil.cbNotificationPush.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                vmPerfil.notificacion(2, isChecked);
+            }
+        });
         bindingPerfil.etFecha.setOnClickListener(v -> {
             try {
                 String fechaStr = bindingPerfil.etFecha.getText().toString(); // por ejemplo, "15/04/1990"

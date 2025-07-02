@@ -13,14 +13,12 @@ public class UsuarioDto {
     private int rolId;
     private String rolNombre;
     private String avatar;
-    private boolean notificaPorEmail;
-    private boolean notificaPorPush;
     private String nombreCompleto= nombre + " " + apellido;
 
     public UsuarioDto() {
     }
 
-    public UsuarioDto(int id, String nombre, String apellido, String documento, String email, String telefono, String domicilio, String fechaNacimiento, int rolId, String rolNombre, String avatar, boolean notificaPorEmail, boolean notificaPorPush) {
+    public UsuarioDto(int id, String nombre, String apellido, String documento, String email, String telefono, String domicilio, String fechaNacimiento, int rolId, String rolNombre, String avatar) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -32,26 +30,9 @@ public class UsuarioDto {
         this.rolId = rolId;
         this.rolNombre = rolNombre;
         this.avatar = avatar;
-        this.notificaPorEmail = notificaPorEmail;
-        this.notificaPorPush = notificaPorPush;
         this.nombreCompleto = this.nombre + " " + this.apellido;
     }
 
-    public boolean isNotificaPorEmail() {
-        return notificaPorEmail;
-    }
-
-    public void setNotificaPorEmail(boolean notificaPorEmail) {
-        this.notificaPorEmail = notificaPorEmail;
-    }
-
-    public boolean isNotificaPorPush() {
-        return notificaPorPush;
-    }
-
-    public void setNotificaPorPush(boolean notificaPorPush) {
-        this.notificaPorPush = notificaPorPush;
-    }
 
     public String getRolNombre() {
         return rolNombre;
@@ -149,7 +130,6 @@ public class UsuarioDto {
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
-
 
     @Override
     public String toString() {

@@ -13,6 +13,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.softannate.apppuentedecomunicacion.R;
 import com.softannate.apppuentedecomunicacion.base.ViewModelBase;
 import com.softannate.apppuentedecomunicacion.modelos.UsuarioDto;
+import com.softannate.apppuentedecomunicacion.modelos.dto.PreferenciaNotificacionDto;
 import com.softannate.apppuentedecomunicacion.modelos.dto.UserUpdateDto;
 
 import retrofit2.Call;
@@ -114,7 +115,27 @@ public class PerfilViewModel extends ViewModelBase {
                 }
             });
         }
+    public void notificacion(int cb, boolean checked) {
+        Log.d("respuesta1", "email: " + cb);
+        PreferenciaNotificacionDto dto= new PreferenciaNotificacionDto(cb, checked);
+        Call<Void> call = endpoints.actualizarNotificacion(dto);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    mensaje.setValue("Notificacion por email actualizada");
+                    Log.d("respuesta1", "onResponse: " + response.code());
+                } else {
+                    Log.e("respuesta1", "Error al obtener la respuesta: " + response.code());
+                }
+            }
 
+            @Override
+            public void onFailure(Call<Void> call, Throwable throwable) {
+                Log.e("respuesta1", "Error al obtener la respuesta: " + throwable.getMessage());
+            }
+        });
+    }
 /*
     public void subirAvatar(Uri uri, Context context) {
         try {
