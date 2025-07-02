@@ -13,9 +13,9 @@ import com.softannate.apppuentedecomunicacion.modelos.dto.OlvidaPassDTO;
 import com.softannate.apppuentedecomunicacion.modelos.RestablecerPass;
 import com.softannate.apppuentedecomunicacion.modelos.Rol;
 import com.softannate.apppuentedecomunicacion.modelos.TipoActividad;
-import com.softannate.apppuentedecomunicacion.modelos.Usuario;
+import com.softannate.apppuentedecomunicacion.modelos.UsuarioDto;
 import com.softannate.apppuentedecomunicacion.modelos.dto.RefreshTokenDto;
-import java.util.Date;
+import com.softannate.apppuentedecomunicacion.modelos.dto.UserUpdateDto;
 import java.util.List;
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
@@ -46,15 +46,15 @@ public interface Endpoints {
     @POST("auth/logout")
     Call<Void> logout(@Body RefreshTokenDto refreshToken);
 
-    //Mensajes
+    //Mensajes - Funcionando
     @GET("mensaje")
     Call<List<MensajeDTO>> mensajes();
 
-    //Categorias
-    @GET("categoria")
+    //Categorias - Funcionando
+    @GET("categoria_mensaje")
     Call<List<Categoria_Mensaje>> categorias();
 
-    //Conversacion
+    //Conversacion - Funcionando
     @GET("mensaje/{receptorId}")
     Call<List<MensajeDTO>> conversacion(@Path("receptorId") int receptorId);
 
@@ -68,27 +68,25 @@ public interface Endpoints {
             @Query("otroParticipanteId") int otroParticipanteId
     );
 
-    //Conversacion, marcar como leído
+    //Conversacion, marcar como leído - Funcionando
     @PUT("mensaje/leidos")
     Call<Void> mensajesLeidos(@Query("emisorId") int receptorId);
 
     @PUT("mensaje/leidos")
     Call<Void> mensajesLeidosConAlumnos(@Query("emisorId") int receptorId,@Query("alumnoId") int alumnoId );
 
-    //Buscar
+    //Buscar - Funcionando
     @GET("mensaje/buscar")
     Call<List<MensajeDTO>> buscar( @Query("busqueda") String busqueda, @Query("fechaInicio") String fechaInicio, @Query("fechaFin") String fechaFin );
 
-    /**
-     *  Método para autenticación de usuario
-     *  Endpoint: POST /auth/login
-     *  Parámetro en el cuerpo (`@Body`): `AuthDto authDto` → Contiene las credenciales del usuario (email y password).
-     *  Retorno: `Call<TokenDto>` → Devuelve un objeto con el `accessToken` y `refreshToken`.
-     *  Funcionamiento:
-     *    - Envía los datos de `authDto` al servidor.
-     *    - Si la autenticación es exitosa, recibe el `accessToken` y lo almacena.
-     *    - Si falla, responde con `500 Error interno del servidor`.
-     */
+    //Profile - Funcionando
+    @GET("usuario/profile")
+    Call<UsuarioDto> profile();
+
+    //Update
+    @PUT("usuario/update")
+    Call<UsuarioDto> update(@Body UserUpdateDto usuario);
+
     //Niveles
     @GET("nivel")
     Call<List<Nivel>> niveles();
@@ -109,21 +107,11 @@ public interface Endpoints {
     @GET("tipoActividad")
     Call<List<TipoActividad>> tiposActividades();
 
-
-
-
-
     //Restablecer Pass
     @POST("usuario/restablecerPass")
     Call<ResponseBody> restablecerPass(@Body RestablecerPass dto, @Header("Authorization") String token);
 
-    //Profile
-    @GET("usuario/profile")
-    Call<Usuario> profile(@Header("Authorization") String token);
 
-    //Update
-    @PUT("usuario/update")
-    Call<Usuario> update(@Header("Authorization")String token, @Body Usuario usuario);
 
     //Avatar
     @PATCH("usuario/avatar")
@@ -145,7 +133,6 @@ public interface Endpoints {
 
     //Mensajes
 
-
     @GET("mensaje/{id}/respuestas")
     Call<List<MensajeDTO>>  respuestas(@Header("Authorization") String token, @Path("id") int id);
 
@@ -153,7 +140,7 @@ public interface Endpoints {
     Call<List<MensajeDTO>> conversacion(@Header("Authorization") String token, @Path("mensajeId") int mensajeId, @Path("usuarioId") int usuarioId);
 
     @GET("mensaje/destinatarios/{alumnoId}")
-    Call<List<Usuario>> destinatarios(@Header("Authorization") String token,@Path("alumnoId") int alumnoId);
+    Call<List<UsuarioDto>> destinatarios(@Header("Authorization") String token, @Path("alumnoId") int alumnoId);
 
 }
 

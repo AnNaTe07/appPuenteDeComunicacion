@@ -80,6 +80,27 @@ public class DatePicker {
 
         pickerFin.show(activity.getSupportFragmentManager(), "PICKER_FIN");
     }
+    public static void showFechaNacimientoPicker(FragmentActivity activity, EditText etFecha, Long fechaNacimientoMillis) {
+        long hoy = MaterialDatePicker.todayInUtcMilliseconds();
+
+        CalendarConstraints.Builder constraintsBuilder = new CalendarConstraints.Builder();
+        CalendarConstraints.DateValidator hastaHoy = DateValidatorPointBackward.before(hoy);
+        constraintsBuilder.setEnd(hoy);
+        constraintsBuilder.setValidator(hastaHoy);
+
+        MaterialDatePicker<Long> pickerNacimiento = MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Seleccioná tu fecha de nacimiento")
+                .setSelection(fechaNacimientoMillis)
+                .setTheme(R.style.CustomDatePickerTheme)
+                .setCalendarConstraints(constraintsBuilder.build())
+                .build();
+
+        pickerNacimiento.addOnPositiveButtonClickListener(selection -> {
+            etFecha.setText(formatearFecha(selection));
+        });
+
+        pickerNacimiento.show(activity.getSupportFragmentManager(), "PICKER_NACIMIENTO");
+    }
 
     private static String formatearFecha(Long millis) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());

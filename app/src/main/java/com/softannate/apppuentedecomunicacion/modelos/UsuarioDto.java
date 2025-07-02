@@ -1,49 +1,53 @@
 package com.softannate.apppuentedecomunicacion.modelos;
 
 
-public class Usuario{
+public class UsuarioDto {
     private int id;
     private String nombre;
     private String apellido;
-    private String dni;
+    private String documento;
     private String email;
     private String telefono;
     private String domicilio;
     private String fechaNacimiento;
     private int rolId;
+    private String rolNombre;
     private String avatar;
-    private String nombreCompleto;
+    private String nombreCompleto= nombre + " " + apellido;
 
-    private Rol rol;
+    public UsuarioDto() {
+    }
 
-    public Usuario() {
+    public UsuarioDto(int id, String nombre, String apellido, String documento, String email, String telefono, String domicilio, String fechaNacimiento, int rolId, String rolNombre, String avatar) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.dni = dni;
+        this.documento = documento;
         this.email = email;
         this.telefono = telefono;
         this.domicilio = domicilio;
         this.fechaNacimiento = fechaNacimiento;
         this.rolId = rolId;
+        this.rolNombre = rolNombre;
         this.avatar = avatar;
-        this.nombreCompleto=nombreCompleto;
+        this.nombreCompleto = this.nombre + " " + this.apellido;
+    }
+
+
+    public String getRolNombre() {
+        return rolNombre;
+    }
+
+    public void setRolNombre(String rolNombre) {
+        this.rolNombre = rolNombre;
     }
 
     public String getNombreCompleto() {
-        return nombreCompleto;
+        return this.nombre + " " + this.apellido;
     }
 
     public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = nombreCompleto;
-    }
-
-    public Rol getRol() {
-        return rol;
-    }
-
-    public void setRol(Rol rol) {
-        this.rol = rol;
     }
 
     public String getFechaNacimiento() {
@@ -94,12 +98,12 @@ public class Usuario{
         this.apellido = apellido;
     }
 
-    public String getDni() {
-        return dni;
+    public String getDocumento() {
+        return documento;
     }
 
-    public void setDni(String dni) {
-        this.dni = dni;
+    public void setDocumento(String documento) {
+        this.documento = documento;
     }
 
     public String getEmail() {

@@ -2,23 +2,17 @@ package com.softannate.apppuentedecomunicacion.ui.main;
 
 import android.app.Application;
 import android.content.Context;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.softannate.apppuentedecomunicacion.modelos.Usuario;
-import com.softannate.apppuentedecomunicacion.data.api.ApiService;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.softannate.apppuentedecomunicacion.modelos.UsuarioDto;
 
 public class MainActivityViewModel extends AndroidViewModel {
 
-    private MutableLiveData<Usuario> usuario;
+    private MutableLiveData<UsuarioDto> usuario;
     private MutableLiveData<String> avatar;
     private Context contexto;
 
@@ -29,7 +23,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         avatar = new MutableLiveData<>();
     }
 
-    public LiveData<Usuario> getUsuario(){
+    public LiveData<UsuarioDto> getUsuario(){
         if(usuario == null){
             usuario = new MutableLiveData<>();
         }

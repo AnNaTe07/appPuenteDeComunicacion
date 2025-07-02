@@ -40,7 +40,6 @@ import com.softannate.apppuentedecomunicacion.modelos.dto.UserUpdateDto;
 import com.softannate.apppuentedecomunicacion.utils.DatePicker;
 import com.softannate.apppuentedecomunicacion.utils.DateUtils;
 import com.softannate.apppuentedecomunicacion.utils.Fecha;
-import com.softannate.apppuentedecomunicacion.utils.TecladoUtils;
 
 import java.io.InputStream;
 import java.text.ParseException;
@@ -178,14 +177,6 @@ public class PerfilFragment extends Fragment {
 
         return  bindingPerfil.getRoot();
     }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        TecladoUtils.configurarOcultadoDeTeclado(view, requireActivity());
-    }
-
     private void cambiarModoEdicion(boolean editable) {
         bindingPerfil.etTelefono.setFocusable(editable);
         bindingPerfil.etTelefono.setFocusableInTouchMode(editable);

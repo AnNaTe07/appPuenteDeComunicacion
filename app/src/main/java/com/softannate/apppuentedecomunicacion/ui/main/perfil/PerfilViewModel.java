@@ -2,42 +2,33 @@ package com.softannate.apppuentedecomunicacion.ui.main.perfil;
 
 import android.app.Application;
 import android.content.Context;
-import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import com.softannate.apppuentedecomunicacion.modelos.Usuario;
-import com.softannate.apppuentedecomunicacion.data.api.ApiService;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
+
+import com.softannate.apppuentedecomunicacion.R;
+import com.softannate.apppuentedecomunicacion.base.ViewModelBase;
+import com.softannate.apppuentedecomunicacion.modelos.UsuarioDto;
+import com.softannate.apppuentedecomunicacion.modelos.dto.UserUpdateDto;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PerfilViewModel extends AndroidViewModel {
+public class PerfilViewModel extends ViewModelBase {
 
-    private Context context;
     private MutableLiveData<String> avatar;
-    private MutableLiveData<Usuario> musuario;
+    private MutableLiveData<UsuarioDto> musuario;
     private MutableLiveData<Boolean> editar = new MutableLiveData<>(false);
     private MutableLiveData<String> btn = new MutableLiveData<>("Editar");
     private String email;
 
     public PerfilViewModel(@NonNull Application application) {
         super(application);
-        this.context = application.getApplicationContext();
         this.avatar = new MutableLiveData<>("");
     }
 
@@ -49,7 +40,7 @@ public class PerfilViewModel extends AndroidViewModel {
         return email;
     }
 
-    public LiveData<Usuario> getMUsuario() {
+    public LiveData<UsuarioDto> getMUsuario() {
         if (musuario == null) {
             musuario = new MutableLiveData<>();
         }
@@ -70,6 +61,9 @@ public class PerfilViewModel extends AndroidViewModel {
         return editar;
     }
 
+    public void setEditar(boolean valor) {
+        editar.setValue(valor); }
+
     public LiveData<String> getBtn() {
         if (btn == null) {
             btn = new MutableLiveData<>();
@@ -77,83 +71,50 @@ public class PerfilViewModel extends AndroidViewModel {
         return btn;
     }
 
-    /*
-        public void obtenerUsuario() {
-            ApiService.Endpoints api = ApiService.getApi();
-            Call<Usuario> call = api.profile(ApiService.getToken(context));
 
-            call.enqueue(new Callback<Usuario>() {
+        public void obtenerUsuario() {
+            Call<UsuarioDto> call = endpoints.profile();
+
+            call.enqueue(new Callback<UsuarioDto>() {
                 @Override
-                public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                public void onResponse(Call<UsuarioDto> call, Response<UsuarioDto> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         musuario.setValue(response.body());
                         avatar.setValue(response.body().toString());
                     }
                 }
-
                 @Override
-                public void onFailure(Call<Usuario> call, Throwable throwable) {
-                    Toast.makeText(context, "Error al mostrar los datos de usuario", Toast.LENGTH_SHORT).show();
+                public void onFailure(Call<UsuarioDto> call, Throwable throwable) {
+                    mensaje.setValue("Error al mostrar los datos de usuario");
                 }
             });
         }
 
-        public void editarPerfil(Usuario usuario) {
-            // Verifico que la fecha de nacimiento no esté vacía o sea null
+        public void editarPerfil(UserUpdateDto usuario) {
             if (usuario.getFechaNacimiento() == null || usuario.getFechaNacimiento().isEmpty()) {
                 Log.e("FechaInput(VIEW)", "Fecha de nacimiento no válida.");
-                Toast.makeText(context, "Fecha de nacimiento no válida.", Toast.LENGTH_SHORT).show();
-                return; // Salir de la función si la fecha está vacía
+               mensaje.setValue("Fecha de nacimiento no válida.");
+                return;
             }
-            ApiService.Endpoints api = ApiService.getApi();
-
-            // Creo un usuario con los datos
-            String email = usuario.getEmail();
-            Usuario actualizado = new Usuario();
-            actualizado.setApellido(usuario.getApellido());
-            actualizado.setEmail(email);
-            actualizado.setNombre(usuario.getNombre());
-            actualizado.setTelefono(usuario.getTelefono());
-            actualizado.setDni(usuario.getDni());
-            actualizado.setDomicilio(usuario.getDomicilio());
-            actualizado.setFechaNacimiento(usuario.getFechaNacimiento());
-            actualizado.setRolId(usuario.getRolId());
-
-            // llamada a la API para actualizar el usuario
-            Call<Usuario> call = api.update(ApiService.getToken(context), actualizado);
-            Log.d("Datos a actualizar", "apellido: " + actualizado.getApellido() + ", nombre: " + actualizado.getNombre() +
-                    ", telefono: " + actualizado.getTelefono() + ", dni: " + actualizado.getDni() + ", email: " + actualizado.getEmail() +
-                    ", rolId: " + actualizado.getRolId() + " fecha: " + actualizado.getFechaNacimiento());
-
-            call.enqueue(new Callback<Usuario>() {
+            Call<UsuarioDto> call = endpoints.update(usuario);
+            call.enqueue(new Callback<UsuarioDto>() {
                 @Override
-                public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                    if (response.isSuccessful() && response.body() != null) {musuario.setValue(response.body()); // Actualizo datos
-                        obtenerUsuario();  // Recargo datos del usuario
+                public void onResponse(Call<UsuarioDto> call, Response<UsuarioDto> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        musuario.setValue(response.body());
+                        mensaje.setValue("Datos actualizados correctamete");
                     } else {
+                        mensaje.setValue("Error al actualizar los Datos");
                         Log.d("Error API", "Cuerpo de la respuesta: " + response.errorBody().toString());
                     }
                 }
                 @Override
-                public void onFailure(Call<Usuario> call, Throwable throwable) {
-                    Toast.makeText(context, "Error al actualizar los Datos", Toast.LENGTH_SHORT).show();
+                public void onFailure(Call<UsuarioDto> call, Throwable throwable) {
+                    mensaje.setValue("Error al actualizar los Datos");
                 }
             });
         }
 
-
-     */
-    public void cambioEditText(ViewGroup layout, boolean editable) {
-
-        for (int i = 0; i < layout.getChildCount(); i++) {
-            View child = layout.getChildAt(i);
-            if (child instanceof EditText) {
-                child.setFocusable(editable);
-                child.setFocusableInTouchMode(editable);
-                child.setEnabled(editable);
-            }
-        }
-    }
 /*
     public void subirAvatar(Uri uri, Context context) {
         try {
