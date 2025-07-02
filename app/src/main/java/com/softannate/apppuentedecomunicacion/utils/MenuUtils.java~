@@ -81,7 +81,7 @@ public class MenuUtils {
 
     private static List<String> generarOpcionesMenu(Context context) {
         List<String> opcionesMenu = new ArrayList<>();
-        //String rol = SpManager.getRol(context);
+        String rol = SpManager.getRol(context);
         opcionesMenu.add("Nuevo Mensaje");
         opcionesMenu.add("Contacto Institucional");
         opcionesMenu.add("Cerrar Sesión");

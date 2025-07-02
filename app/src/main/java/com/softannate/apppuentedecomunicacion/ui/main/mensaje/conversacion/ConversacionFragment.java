@@ -30,27 +30,13 @@ public class ConversacionFragment extends FragmentNuevoConversacion {
     private RecyclerView rvConversaciones;
     private List<MensajeDTO> listaMensajes;
     private static final int TIEMPO_ESPERA = 4000;
-/*
-    public static ConversacionFragment newInstance(String avatar,String userNombre, int userId, int alumnoID, String alumnoNombre) {
-        ConversacionFragment fragment = new ConversacionFragment();
-        Bundle args= new Bundle();
-        args.putInt("userId", userId);
-        args.putInt("alumnoId", alumnoID);
-        args.putString("alumnoNombre", alumnoNombre);
-        args.putString("avatar",avatar);
-        args.putString("userNombre", userNombre);
-        fragment.setArguments(args);
-        return  fragment;
-    }
-
- */
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding= FragmentConversacionBinding.inflate(inflater, container, false);
         vmConversacion= new ViewModelProvider(this).get(ConversacionViewModel.class);
-/*
+
         vmConversacion.getEnviandoMensaje().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
@@ -58,7 +44,7 @@ public class ConversacionFragment extends FragmentNuevoConversacion {
             }
         });
 
- */
+
         vmConversacion.mostrarLayout().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean mostrar) {
@@ -75,6 +61,7 @@ public class ConversacionFragment extends FragmentNuevoConversacion {
         rvConversaciones= binding.recyclerMensajes;
         rvConversaciones.setLayoutManager(llConversaciones);
         rvConversaciones.setAdapter(adapter);
+        configurarObservers(vmConversacion);
 
         return binding.getRoot();
     }
@@ -82,8 +69,8 @@ public class ConversacionFragment extends FragmentNuevoConversacion {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-       // this.tvCategoria = binding.layoutEscribir.tvCategoria;
-       // this.editMensaje = binding.layoutEscribir.editMensaje;
+        this.tvCategoria = binding.layoutEscribir.tvCategoria;
+        this.editMensaje = binding.layoutEscribir.editMensaje;
 
         Bundle args = getArguments();
         if(args == null) return;
@@ -111,11 +98,6 @@ public class ConversacionFragment extends FragmentNuevoConversacion {
                 .into(binding.fotoUsuario);
 
 
-       // int alumnoId= getArguments().getInt("alumnoId");
-        //int userId= getArguments().getInt("userId");
-        //vmConversacion.setIds( userId,alumnoId);
-        //Log.d("ViewModelResponse1", alumnoId + " " + userId);
-
         vmConversacion.inicializarDesdeBundle(requireContext(), args);
         vmConversacion.cargarMensajes();
         vmConversacion.getListaMensaje().observe(getViewLifecycleOwner(), new Observer<List<MensajeDTO>>() {
@@ -140,7 +122,6 @@ public class ConversacionFragment extends FragmentNuevoConversacion {
         }, TIEMPO_ESPERA);
 
     }
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

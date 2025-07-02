@@ -5,11 +5,11 @@ public class MensajeUsuario {
     private int mensajeId;
     private Mensaje mensaje;
     private int usuarioId;
-    private Usuario usuario;
+    private UsuarioDto usuario;
     private int alumnoId;
     private Alumno alumno;
 
-    public MensajeUsuario(int mensajeId, Mensaje mensaje, int usuarioId, Usuario usuario, int alumnoId, Alumno alumno) {
+    public MensajeUsuario(int mensajeId, Mensaje mensaje, int usuarioId, UsuarioDto usuario, int alumnoId, Alumno alumno) {
         this.mensajeId = mensajeId;
         this.mensaje = mensaje;
         this.usuarioId = usuarioId;
@@ -42,11 +42,11 @@ public class MensajeUsuario {
         this.usuarioId = usuarioId;
     }
 
-    public Usuario getUsuario() {
+    public UsuarioDto getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(UsuarioDto usuario) {
         this.usuario = usuario;
     }
 

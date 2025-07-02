@@ -32,13 +32,13 @@ public class ViewModelConversacionNuevo extends ViewModelBase{
                     listaCategorias.setValue(categoria_mensajes);
                     Log.d("ListaNombresViewModel", "Response: " + categoria_mensajes);
                 } else {
-                    Log.e("ListaNombresViewModel", "Error en la llamada: " + response.errorBody());
+                    Log.e("ListaNombresViewModel", "Error en la llamada al obtener categorias: " + response.errorBody());
                 }
             }
 
             @Override
             public void onFailure(Call<List<Categoria_Mensaje>> call, Throwable throwable) {
-                Log.e("ListaNombresViewModel", "Error en la llamada: " + throwable.getMessage());
+                Log.e("ListaNombresViewModel", "Error en la llamada : " + throwable.getMessage());
             }
         });
     }

@@ -11,12 +11,12 @@ public class Mensaje implements Serializable {
     private String texto;
     private Date fecha;
     private int usuarioId;
-    private Usuario usuario;
+    private UsuarioDto usuario;
     private int alumnoId;
     private Alumno alumno;
     private List<MensajeUsuario>receptores;
 
-    public Mensaje(int id, String asunto, String texto, Date fecha, int usuarioId, Usuario usuario, int alumnoId, Alumno alumno, List<MensajeUsuario> receptores) {
+    public Mensaje(int id, String asunto, String texto, Date fecha, int usuarioId, UsuarioDto usuario, int alumnoId, Alumno alumno, List<MensajeUsuario> receptores) {
         this.id = id;
         this.asunto = asunto;
         this.texto = texto;
@@ -68,11 +68,11 @@ public class Mensaje implements Serializable {
         this.usuarioId = usuarioId;
     }
 
-    public Usuario getUsuario() {
+    public UsuarioDto getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(UsuarioDto usuario) {
         this.usuario = usuario;
     }
 

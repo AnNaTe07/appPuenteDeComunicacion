@@ -1,6 +1,5 @@
 package com.softannate.apppuentedecomunicacion.base;
 
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,11 +38,7 @@ protected TextView tvCategoria;
         tvCategoria.setText("Categoría");
     }
     private void cargarEtiquetas(TextView tvCategoria,List<Categoria_Mensaje> categorias) {
-        Log.d("PopupTest", "Click en tvCategoria detectado");
-
         tvCategoria.setOnClickListener(v -> {
-            Log.d("PopupTest", "Click en tvCategoria detectado");
-
             CategoriaPopUpWindow categoriaPopUpWindow = new CategoriaPopUpWindow(
                     requireContext(),
                     categorias,

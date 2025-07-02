@@ -34,7 +34,6 @@ public class TecladoUtils {
                 return false;
             });
         }
-
         if (vista instanceof ViewGroup) {
             int cantidad = ((ViewGroup) vista).getChildCount();
             for (int i = 0; i < cantidad; i++) {

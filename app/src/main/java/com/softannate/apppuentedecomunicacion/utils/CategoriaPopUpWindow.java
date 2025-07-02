@@ -3,6 +3,7 @@ package com.softannate.apppuentedecomunicacion.utils;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,16 +11,17 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-
 import androidx.core.content.ContextCompat;
-
 import com.softannate.apppuentedecomunicacion.R;
 import com.softannate.apppuentedecomunicacion.modelos.Categoria_Mensaje;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class CategoriaPopUpWindow {
+
+    private final Context context;
+    private final List<Categoria_Mensaje> categorias;
+    private final OnCategoriaSeleccionadaListener listener;
 
     public CategoriaPopUpWindow(Context context, List<Categoria_Mensaje> categorias, OnCategoriaSeleccionadaListener listener) {
         this.context = context;
@@ -31,13 +33,11 @@ public class CategoriaPopUpWindow {
         void onSeleccionada(Categoria_Mensaje categoria);
     }
 
-    private final Context context;
-    private final List<Categoria_Mensaje> categorias;
-    private final OnCategoriaSeleccionadaListener listener;
-
     public void mostrar(View anchorView) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.popup, null);
+        Log.d("CategoriaPopUp", "Popup view inflado: " + (view != null));
+
 
         ListView listView = view.findViewById(R.id.listViewItems);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.item_categorias, obtenerNombres());
@@ -52,7 +52,11 @@ public class CategoriaPopUpWindow {
         int[] location = new int[2];
         anchorView.getLocationOnScreen(location);
         int x = location[0];
-        int y = location[1] + anchorView.getHeight(); // Ajuste para mostrar justo debajo de la vista
+        int popupHeight = view.getMeasuredHeight();
+        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        popupHeight = view.getMeasuredHeight(); // altura real del popup
+
+        int y = location[1] - popupHeight; // muestra arriba del anchor
 
         popupWindow.showAtLocation(anchorView, Gravity.NO_GRAVITY, x, y);
 

@@ -8,7 +8,7 @@ public class Alumno {
     private int cursoId;
     //private Curso curso;
     private int UsuarioId;
-    private Usuario usuario;
+    private UsuarioDto usuario;
     private String nombreCompleto;
 
     public Alumno(int id, String nombre, String apellido, int dni, int cursoId, int usuarioId) {
@@ -76,11 +76,11 @@ public class Alumno {
         UsuarioId = usuarioId;
     }
 
-    public Usuario getUsuario() {
+    public UsuarioDto getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(UsuarioDto usuario) {
         this.usuario = usuario;
     }
 }
