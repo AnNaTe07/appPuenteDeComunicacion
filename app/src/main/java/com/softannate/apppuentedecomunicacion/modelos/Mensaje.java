@@ -1,5 +1,7 @@
 package com.softannate.apppuentedecomunicacion.modelos;
 
+import com.softannate.apppuentedecomunicacion.modelos.dto.UsuarioDto;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;

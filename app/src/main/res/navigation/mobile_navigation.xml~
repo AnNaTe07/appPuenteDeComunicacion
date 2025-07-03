@@ -53,9 +53,19 @@
         android:id="@+id/nav_conversacion"
         android:name="com.softannate.apppuentedecomunicacion.ui.main.mensaje.conversacion.ConversacionFragment"
         android:label="fragment_conversacion"
-        tools:layout="@layout/fragment_conversacion" >
+        tools:layout="@layout/fragment_conversacion">
         <action
             android:id="@+id/action_conversacionFragment_to_nav_mensajes"
             app:destination="@id/nav_mensajes" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_nuevoE"
+        android:name="com.softannate.apppuentedecomunicacion.ui.main.nuevoMensaje.educacion.NuevoMensajeEducacionFragment"
+        android:label="fragment_nuevo_mensaje_educacion"
+        tools:layout="@layout/fragment_nuevo_mensaje_educacion" />
+    <fragment
+        android:id="@+id/nuevoMensajeTutorFragment"
+        android:name="com.softannate.apppuentedecomunicacion.ui.main.nuevoMensaje.tutor.NuevoMensajeTutorFragment"
+        android:label="fragment_nuevo_mensaje_tutor"
+        tools:layout="@layout/fragment_nuevo_mensaje_tutor" />
 </navigation>

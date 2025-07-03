@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.nuevoMensaje.tutor.NuevoMensajeTutorFragment">
+
+        <!-- SCROLLABLE CONTENT -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nav_nuevoT"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:fillViewport="true"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:id="@+id/contentLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@android:color/darker_gray"
+            android:orientation="vertical"
+            android:showDividers="middle">
+
+            <include layout="@layout/view_seleccion_radios" />
+
+            <!-- Destinatarios -->
+            <include layout="@layout/view_lista_destinatarios" />
+
+            <include layout="@layout/view_chip_group" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+        <!-- FOOTER -->
+        <include
+            android:id="@+id/layoutEscribir"
+            layout="@layout/view_foot_escribir" />
+    </LinearLayout>

@@ -13,7 +13,7 @@ import com.softannate.apppuentedecomunicacion.modelos.dto.OlvidaPassDTO;
 import com.softannate.apppuentedecomunicacion.modelos.RestablecerPass;
 import com.softannate.apppuentedecomunicacion.modelos.Rol;
 import com.softannate.apppuentedecomunicacion.modelos.TipoActividad;
-import com.softannate.apppuentedecomunicacion.modelos.UsuarioDto;
+import com.softannate.apppuentedecomunicacion.modelos.dto.UsuarioDto;
 import com.softannate.apppuentedecomunicacion.modelos.dto.PreferenciaNotificacionDto;
 import com.softannate.apppuentedecomunicacion.modelos.dto.RefreshTokenDto;
 import com.softannate.apppuentedecomunicacion.modelos.dto.UserUpdateDto;
@@ -115,7 +115,7 @@ public interface Endpoints {
     //Restablecer Pass
     @POST("usuario/restablecerPass")
     Call<ResponseBody> restablecerPass(@Body RestablecerPass dto, @Header("Authorization") String token);
-    
+
     //Avatar
     @PATCH("usuario/avatar")
     @Multipart

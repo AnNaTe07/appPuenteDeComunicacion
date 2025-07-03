@@ -1,0 +1,74 @@
+package com.softannate.apppuentedecomunicacion.ui.main.nuevoMensaje.educacion;
+
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.lifecycle.ViewModelProvider;
+
+import android.graphics.Typeface;
+import android.os.Bundle;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import com.softannate.apppuentedecomunicacion.R;
+import com.softannate.apppuentedecomunicacion.base.FragmentNuevoConversacion;
+import com.softannate.apppuentedecomunicacion.databinding.FragmentNuevoMensajeEducacionBinding;
+
+public class NuevoMensajeEducacionFragment extends FragmentNuevoConversacion {
+
+    private NuevoMensajeEducacionViewModel vmNuevoE;
+    private RadioGroup rg;
+    private FragmentNuevoMensajeEducacionBinding binding;
+
+    public static NuevoMensajeEducacionFragment newInstance() {
+        return new NuevoMensajeEducacionFragment();
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        binding = FragmentNuevoMensajeEducacionBinding.inflate(inflater, container, false);
+
+
+        vmNuevoE = new ViewModelProvider(this).get(NuevoMensajeEducacionViewModel.class);
+        rg= binding.layoutRadios.rgDestinatarios;
+
+        RadioButton rbAlumnos = new RadioButton(requireContext());
+        rbAlumnos.setId(View.generateViewId());
+        rbAlumnos.setText("Alumnos");
+
+        RadioButton rbPersonal = new RadioButton(requireContext());
+        rbPersonal.setId(View.generateViewId());
+        rbPersonal.setText("Personal educativo");
+
+        rbAlumnos.setTextSize(15);
+        rbPersonal.setTextSize(16);
+        rbAlumnos.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBase));
+        rbPersonal.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBase));
+        Typeface fuentePersonalizada = ResourcesCompat.getFont(requireContext(), R.font.adamina);
+        rbAlumnos.setTypeface(fuentePersonalizada);
+        rbPersonal.setTypeface(fuentePersonalizada);
+
+        rg.addView(rbAlumnos);
+        rg.addView(rbPersonal);
+        rg.requestLayout();
+        Log.d("RADIOGROUP", "Hijos: " + rg.getChildCount());
+
+
+        return binding.getRoot();
+
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        vmNuevoE = new ViewModelProvider(this).get(NuevoMensajeEducacionViewModel.class);
+        // TODO: Use the ViewModel
+    }
+
+}

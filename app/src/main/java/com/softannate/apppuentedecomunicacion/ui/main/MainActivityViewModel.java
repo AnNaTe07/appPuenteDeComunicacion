@@ -8,7 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.softannate.apppuentedecomunicacion.modelos.UsuarioDto;
+import com.softannate.apppuentedecomunicacion.modelos.dto.UsuarioDto;
 
 public class MainActivityViewModel extends AndroidViewModel {
 

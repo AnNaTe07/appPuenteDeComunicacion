@@ -1,4 +1,4 @@
-package com.softannate.apppuentedecomunicacion.modelos;
+package com.softannate.apppuentedecomunicacion.modelos.dto;
 
 
 public class UsuarioDto {

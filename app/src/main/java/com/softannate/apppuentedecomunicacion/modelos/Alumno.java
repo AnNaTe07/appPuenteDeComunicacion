@@ -1,5 +1,7 @@
 package com.softannate.apppuentedecomunicacion.modelos;
 
+import com.softannate.apppuentedecomunicacion.modelos.dto.UsuarioDto;
+
 public class Alumno {
     private int id;
     private String nombre;

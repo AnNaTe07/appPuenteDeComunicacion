@@ -1,18 +1,14 @@
 package com.softannate.apppuentedecomunicacion.ui.main.perfil;
 
 import android.app.Application;
-import android.content.Context;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.softannate.apppuentedecomunicacion.R;
 import com.softannate.apppuentedecomunicacion.base.ViewModelBase;
-import com.softannate.apppuentedecomunicacion.modelos.UsuarioDto;
+import com.softannate.apppuentedecomunicacion.modelos.dto.UsuarioDto;
 import com.softannate.apppuentedecomunicacion.modelos.dto.PreferenciaNotificacionDto;
 import com.softannate.apppuentedecomunicacion.modelos.dto.UserUpdateDto;
 
@@ -115,6 +111,7 @@ public class PerfilViewModel extends ViewModelBase {
                 }
             });
         }
+
     public void notificacion(int cb, boolean checked) {
         Log.d("respuesta1", "email: " + cb);
         PreferenciaNotificacionDto dto= new PreferenciaNotificacionDto(cb, checked);
@@ -129,7 +126,6 @@ public class PerfilViewModel extends ViewModelBase {
                     Log.e("respuesta1", "Error al obtener la respuesta: " + response.code());
                 }
             }
-
             @Override
             public void onFailure(Call<Void> call, Throwable throwable) {
                 Log.e("respuesta1", "Error al obtener la respuesta: " + throwable.getMessage());

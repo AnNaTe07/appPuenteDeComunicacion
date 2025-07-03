@@ -36,7 +36,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.softannate.apppuentedecomunicacion.R;
 import com.softannate.apppuentedecomunicacion.databinding.FragmentPerfilBinding;
-import com.softannate.apppuentedecomunicacion.modelos.UsuarioDto;
+import com.softannate.apppuentedecomunicacion.modelos.dto.UsuarioDto;
 import com.softannate.apppuentedecomunicacion.modelos.dto.UserUpdateDto;
 import com.softannate.apppuentedecomunicacion.utils.DatePicker;
 import com.softannate.apppuentedecomunicacion.utils.DateUtils;
@@ -131,8 +131,6 @@ public class PerfilFragment extends Fragment {
                 DatePicker.showFechaNacimientoPicker(requireActivity(), bindingPerfil.etFecha, null);
             }
         });
-
-
 
         bindingPerfil.btEditar.setOnClickListener(v -> {
             cambiarModoEdicion(true); // Activo edición

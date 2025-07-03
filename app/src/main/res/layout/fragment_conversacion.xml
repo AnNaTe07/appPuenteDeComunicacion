@@ -74,6 +74,6 @@
 
     <include
         android:id="@+id/layoutEscribir"
-        layout="@layout/foot_escribir" />
+        layout="@layout/view_foot_escribir" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

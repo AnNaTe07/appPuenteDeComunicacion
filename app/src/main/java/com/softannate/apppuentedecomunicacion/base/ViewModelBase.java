@@ -1,6 +1,5 @@
 package com.softannate.apppuentedecomunicacion.base;
 
-
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
@@ -14,8 +13,6 @@ import com.softannate.apppuentedecomunicacion.data.local.SpManager;
 import com.softannate.apppuentedecomunicacion.data.local.TokenExpirationChecker;
 import com.softannate.apppuentedecomunicacion.modelos.dto.MensajeDTO;
 import com.softannate.apppuentedecomunicacion.utils.SingleLiveEvent;
-
-import java.util.ArrayList;
 import java.util.List;
 
 

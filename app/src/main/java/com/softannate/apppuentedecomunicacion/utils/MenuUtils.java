@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +50,13 @@ public class MenuUtils {
         popupWindow.dismiss();
         switch (opcionSeleccionada) {
             case "Nuevo Mensaje":
-                //navegar(activity, R.id.nav_nuevo_mensaje);
+                String rol=SpManager.getRol(activity);
+                Log.d("MenuUtils", "rol: " + rol);
+                if(rol.equals("5")) {
+                    navegar(activity, R.id.nav_nuevoT);
+                }else {
+                    navegar(activity, R.id.nav_nuevoE);
+                }
                 break;
             case "Contacto Institucional":
                 navegar(activity, R.id.nav_inicio);
@@ -81,7 +88,6 @@ public class MenuUtils {
 
     private static List<String> generarOpcionesMenu(Context context) {
         List<String> opcionesMenu = new ArrayList<>();
-        //String rol = SpManager.getRol(context);
         opcionesMenu.add("Nuevo Mensaje");
         opcionesMenu.add("Contacto Institucional");
         opcionesMenu.add("Cerrar Sesión");
