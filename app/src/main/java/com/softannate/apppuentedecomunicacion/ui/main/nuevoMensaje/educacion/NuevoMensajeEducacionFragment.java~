@@ -62,7 +62,7 @@ public class NuevoMensajeEducacionFragment extends FragmentNuevoConversacion {
         RadioButton rbPersonal = new RadioButton(requireContext());
         rbPersonal.setId(View.generateViewId());
         rbPersonal.setText("Personal educativo");
-        rbPersonal.setTag("PERSONAL");
+        rbAlumnos.setTag("PERSONAL");
 
         rbAlumnos.setTextSize(16);
         rbPersonal.setTextSize(16);

@@ -4,6 +4,7 @@ import com.softannate.apppuentedecomunicacion.modelos.Alumno;
 import com.softannate.apppuentedecomunicacion.modelos.CambioPass;
 import com.softannate.apppuentedecomunicacion.modelos.Categoria_Mensaje;
 import com.softannate.apppuentedecomunicacion.modelos.EstadoAsistencia;
+import com.softannate.apppuentedecomunicacion.modelos.dto.DestinatarioDto;
 import com.softannate.apppuentedecomunicacion.modelos.dto.LoginDTO;
 import com.softannate.apppuentedecomunicacion.modelos.dto.LoginResponseDTO;
 import com.softannate.apppuentedecomunicacion.modelos.Materia;
@@ -80,6 +81,9 @@ public interface Endpoints {
     @GET("mensaje/buscar")
     Call<List<MensajeDTO>> buscar( @Query("busqueda") String busqueda, @Query("fechaInicio") String fechaInicio, @Query("fechaFin") String fechaFin );
 
+    //Obtener personal educativo
+    @GET("mensaje/destinatarioEducativo")
+    Call<List<DestinatarioDto>> obtenerDestinatariosEducativos();
     //Profile - Funcionando
     @GET("usuario/profile")
     Call<UsuarioDto> profile();

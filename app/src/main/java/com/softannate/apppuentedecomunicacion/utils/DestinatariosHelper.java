@@ -1,0 +1,28 @@
+package com.softannate.apppuentedecomunicacion.utils;
+
+import android.util.Log;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+
+import androidx.lifecycle.ViewModel;
+
+import com.softannate.apppuentedecomunicacion.ui.main.nuevoMensaje.educacion.NuevoMensajeEducacionViewModel;
+
+public class DestinatariosHelper {
+
+    public static void manejarSeleccionEducacion(NuevoMensajeEducacionViewModel viewModel, int checkedId, RadioGroup group) {
+        RadioButton selected = group.findViewById(checkedId);
+        if (selected != null && selected.getTag() != null) {
+            String tag = selected.getTag().toString();
+
+            switch (tag) {
+                case "PERSONAL":
+                    viewModel.obtenerDestinatarios();
+                    break;
+                case "ALUMNOS":
+                   // viewModel.obtenerAlumnosRelacionados();
+                    break;
+            }
+        }
+    }
+}

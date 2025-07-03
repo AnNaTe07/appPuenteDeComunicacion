@@ -30,7 +30,6 @@ public class NuevoMensajeEducacionViewModel extends ViewModelConversacionNuevo {
             public void onResponse(Call<List<DestinatarioDto>> call, Response<List<DestinatarioDto>> response) {
                 if(response.isSuccessful() && response.body() != null){
                     destinatarios.setValue(response.body());
-                    Log.d("ViewModelResponse333", "Destinatarios cargados correctamente: " + response.body());
                 }else{
                     Log.d("ViewModelResponseError", "Código de error: " + response.code());
                 }
