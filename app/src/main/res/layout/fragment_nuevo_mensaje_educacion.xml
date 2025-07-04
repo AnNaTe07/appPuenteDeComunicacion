@@ -30,10 +30,11 @@
                 layout="@layout/view_seleccion_radios" />
 
             <include
+                android:id="@+id/layoutDestinatarios"
                 layout="@layout/view_lista_destinatarios" />
 
             <include
-
+                android:id="@+id/layoutChipGroup"
                 layout="@layout/view_chip_group" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

@@ -7,7 +7,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import com.softannate.apppuentedecomunicacion.base.ViewModelConversacionNuevo;
 import com.softannate.apppuentedecomunicacion.modelos.dto.DestinatarioDto;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -15,13 +20,69 @@ import retrofit2.Response;
 public class NuevoMensajeEducacionViewModel extends ViewModelConversacionNuevo {
 
     private MutableLiveData<List<DestinatarioDto>> destinatarios = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> mostrarSeleccionarTodos = new MutableLiveData<>(false);
+    private final MutableLiveData<List<DestinatarioDto>> chipsVisibles = new MutableLiveData<>();
+    private final MutableLiveData<Set<Integer>> idsSeleccionados = new MutableLiveData<>(new HashSet<>());
+
 
     public NuevoMensajeEducacionViewModel(@NonNull Application application) {
         super(application);
     }
+
     public LiveData<List<DestinatarioDto>> getDestinatarios() {
         return destinatarios;
     }
+
+    public LiveData<Boolean> getMostrarSeleccionarTodos() {
+        return mostrarSeleccionarTodos;
+    }
+
+    public LiveData<Set<Integer>> getIdsSeleccionados() { return idsSeleccionados; }
+
+    public LiveData<List<DestinatarioDto>> getChipsVisibles() { return chipsVisibles; }
+
+    public void toggleSeleccion(int id) {
+        Set<Integer> seleccion = new HashSet<>(idsSeleccionados.getValue());
+        if (!seleccion.add(id)) seleccion.remove(id); // Si el ID ya está en la lista, lo elimina
+        idsSeleccionados.setValue(seleccion); // Se actualiza la lista de seleccionados
+        // Log para ver los IDs seleccionados
+        Log.d("ViewModel", "IDs seleccionados: " + seleccion.toString());
+        // Después, sincroniza la lista de chips
+        sincronizarChips();
+    }
+
+
+    private void sincronizarChips() {
+        List<DestinatarioDto> lista = destinatarios.getValue();
+        Set<Integer> seleccion = idsSeleccionados.getValue();
+        if (lista == null || seleccion == null) return;
+
+        List<DestinatarioDto> visibles = lista.stream()
+                .filter(d -> seleccion.contains(d.getId()))
+                .collect(Collectors.toList());
+
+        chipsVisibles.setValue(visibles);
+    }
+    // En tu ViewModel
+    public void marcarSeleccionGlobal(boolean seleccionar) {
+        Set<Integer> seleccion = new HashSet<>(idsSeleccionados.getValue());
+        if (seleccionar) {
+            // Selecciona todos los destinatarios
+            for (DestinatarioDto d : destinatarios.getValue()) {
+                seleccion.add(d.getId());
+            }
+        } else {
+            // Deselecciona todos
+            seleccion.clear();
+        }
+
+        // Actualizar los seleccionados
+        idsSeleccionados.setValue(seleccion);
+
+        // Sincroniza los chips
+        sincronizarChips();
+    }
+
 
     public void obtenerDestinatarios() {
         Call<List<DestinatarioDto>> call= endpoints.obtenerDestinatariosEducativos();
@@ -29,7 +90,11 @@ public class NuevoMensajeEducacionViewModel extends ViewModelConversacionNuevo {
             @Override
             public void onResponse(Call<List<DestinatarioDto>> call, Response<List<DestinatarioDto>> response) {
                 if(response.isSuccessful() && response.body() != null){
-                    destinatarios.setValue(response.body());
+                    List<DestinatarioDto> lista = response.body();
+                    destinatarios.setValue(lista);
+                    sincronizarChips();
+                    mostrarSeleccionarTodos.setValue(!lista.isEmpty());
+                    Log.d("ViewModelResponse333", "Destinatarios cargados correctamente: " + response.body());
                 }else{
                     Log.d("ViewModelResponseError", "Código de error: " + response.code());
                 }

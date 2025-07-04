@@ -1,11 +1,7 @@
 package com.softannate.apppuentedecomunicacion.utils;
 
-import android.util.Log;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-
-import androidx.lifecycle.ViewModel;
-
 import com.softannate.apppuentedecomunicacion.ui.main.nuevoMensaje.educacion.NuevoMensajeEducacionViewModel;
 
 public class DestinatariosHelper {
@@ -23,8 +19,6 @@ public class DestinatariosHelper {
                    // viewModel.obtenerAlumnosRelacionados();
                     break;
             }
-        } else {
-            Log.e("DestinatariosHelper", "RadioButton sin tag o null en onCheckedChanged");
         }
     }
 }
