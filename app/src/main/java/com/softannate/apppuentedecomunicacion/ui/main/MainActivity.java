@@ -1,17 +1,29 @@
 package com.softannate.apppuentedecomunicacion.ui.main;
 
 import static com.softannate.apppuentedecomunicacion.utils.NavigationBarColor.setNavigationBarColor;
+
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageButton;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.softannate.apppuentedecomunicacion.R;
+import com.softannate.apppuentedecomunicacion.data.api.WebSocketManager;
 import com.softannate.apppuentedecomunicacion.utils.MenuUtils;
 
 
@@ -19,11 +31,17 @@ public class MainActivity extends AppCompatActivity {
 
     private NavController navController;
     private BottomNavigationView bottomNavigationView;
+    private MainActivityViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
         setContentView(R.layout.activity_main);
+        viewModel.obtenerYEnviarTokenFcm();
+
+        WebSocketManager.setContext(getApplicationContext());
+        WebSocketManager.conectar();
 
         //inicializo el NavController
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
@@ -47,18 +65,44 @@ public class MainActivity extends AppCompatActivity {
             });
         });
 
-        // Navegación desde intent externo (si aplica)
         if (getIntent().getBooleanExtra("navegar_a_mensajes", false)) {
             navController.navigate(R.id.nav_mensajes);
         }
 
-        setNavigationBarColor(this, R.color.colorBase);
+        //Crear canal de notificación (Android 8+)
+         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    "canal_id", "Notificaciones FCM", NotificationManager.IMPORTANCE_HIGH);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+         // permiso para mostrar notificaciones (Android 13+)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.POST_NOTIFICATIONS},
+                        1001); // Código arbitrario
+            }
+        }
+        setNavigationBarColor(this, R.color.colorBase, android.R.color.white);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        WebSocketManager.conectar();
+    }
 
     @Override
     public boolean onSupportNavigateUp() {
         return navController.navigateUp() || super.onSupportNavigateUp();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        WebSocketManager.cerrarConexion();
     }
 
 }

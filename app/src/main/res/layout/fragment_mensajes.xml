@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".ui.main.mensaje.listaChats.Mensajes">
+    tools:context=".ui.main.mensaje.listaChats.MensajesFragment">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/svBuscarMensaje"
@@ -19,6 +19,93 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="16dp"/>
+
+    <!-- Grupo Switch + Textos -->
+    <TextView
+        android:id="@+id/tvIzquierdaSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chats actuales ✉️"
+        android:textSize="14sp"
+        android:textColor="#333333"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/svBuscarMensaje" />
+
+    <Switch
+        android:id="@+id/swChatsArchivados"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/tvIzquierdaSwitch"
+        app:layout_constraintTop_toTopOf="@id/tvIzquierdaSwitch" />
+
+    <TextView
+        android:id="@+id/tvDerechaSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chats archivados 📁"
+        android:textSize="14sp"
+        android:textColor="#777777"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/swChatsArchivados"
+        app:layout_constraintTop_toTopOf="@id/swChatsArchivados" />
+
+    <!-- Fecha Inicio principal -->
+    <EditText
+        android:id="@+id/etFechaInicio"
+        android:layout_width="wrap_content"
+        style="@style/EditTextFecha"
+        android:layout_marginTop="16dp"
+        android:drawableStart="@drawable/calendario"
+        android:drawablePadding="5dp"
+        android:hint="Fecha Inicio"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintTop_toBottomOf="@+id/swChatsArchivados" />
+
+    <!-- Fecha Inicio secundaria (borrar) -->
+    <EditText
+        android:id="@+id/etFechaInicio2"
+        android:layout_width="wrap_content"
+        style="@style/EditTextFecha"
+        android:layout_marginTop="16dp"
+        android:drawableEnd="@drawable/close"
+        android:drawablePadding="-13dp"
+        app:layout_constraintStart_toEndOf="@+id/etFechaInicio"
+        app:layout_constraintEnd_toStartOf="@+id/etFechaFin"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintTop_toBottomOf="@+id/swChatsArchivados" />
+
+    <!-- Fecha Fin principal -->
+    <EditText
+        android:id="@+id/etFechaFin"
+        android:layout_width="wrap_content"
+        style="@style/EditTextFecha"
+        android:layout_marginTop="16dp"
+        android:drawableStart="@drawable/calendario"
+        android:drawablePadding="5dp"
+        android:hint="Fecha fin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintTop_toBottomOf="@+id/swChatsArchivados" />
+
+    <!-- Fecha Fin secundaria (borrar) -->
+    <EditText
+        android:id="@+id/etFechaFin2"
+        android:layout_width="wrap_content"
+        style="@style/EditTextFecha"
+        android:layout_marginTop="16dp"
+        android:drawableEnd="@drawable/close"
+        android:drawablePadding="-13dp"
+        app:layout_constraintStart_toEndOf="@+id/etFechaFin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintTop_toBottomOf="@+id/swChatsArchivados" />
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -36,88 +123,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etFechaFin"
         app:layout_constraintVertical_bias="0.183" />
-
-
-    <EditText
-        android:id="@+id/etFechaInicio2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@android:color/transparent"
-        android:drawableEnd="@drawable/ic_clear"
-        android:drawablePadding="5dp"
-        android:focusable="false"
-        android:importantForAccessibility="yes"
-        android:inputType="none"
-        android:maxLines="1"
-        android:padding="8dp"
-        android:textColor="#000000"
-        android:textColorHint="#B6B1B1"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/etFechaFin"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/etFechaInicio"
-        app:layout_constraintTop_toBottomOf="@+id/svBuscarMensaje" />
-
-    <EditText
-        android:id="@+id/etFechaInicio"
-        android:layout_width="149dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="24dp"
-        android:background="@android:color/transparent"
-        android:drawableStart="@drawable/calendario"
-        android:drawablePadding="5dp"
-        android:focusable="false"
-        android:hint="Fecha Inicio"
-        android:importantForAccessibility="yes"
-        android:inputType="none"
-        android:padding="5dp"
-        android:textColor="@color/black"
-        android:textColorHint="#B6B1B1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/svBuscarMensaje" />
-
-    <EditText
-        android:id="@+id/etFechaFin2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@android:color/transparent"
-        android:drawableEnd="@drawable/ic_clear"
-        android:drawablePadding="5dp"
-        android:focusable="false"
-        android:importantForAccessibility="yes"
-        android:inputType="none"
-        android:maxLines="1"
-        android:padding="8dp"
-        android:textColor="#000000"
-        android:textColorHint="#B6B1B1"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/etFechaFin"
-        app:layout_constraintTop_toBottomOf="@+id/svBuscarMensaje" />
-
-    <EditText
-        android:id="@+id/etFechaFin"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="24dp"
-        android:background="@android:color/transparent"
-        android:drawableStart="@drawable/calendario"
-        android:drawablePadding="5dp"
-        android:focusable="false"
-        android:hint="Fecha fin"
-        android:importantForAccessibility="yes"
-        android:inputType="none"
-        android:padding="5dp"
-        android:textColor="@color/black"
-        android:textColorHint="#B6B1B1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.899"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/svBuscarMensaje" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

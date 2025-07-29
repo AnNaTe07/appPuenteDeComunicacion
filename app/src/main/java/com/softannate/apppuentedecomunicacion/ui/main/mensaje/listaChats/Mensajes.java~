@@ -1,6 +1,5 @@
 package com.softannate.apppuentedecomunicacion.ui.main.mensaje.listaChats;
 
-import androidx.core.graphics.Insets;
 
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -16,24 +15,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.softannate.apppuentedecomunicacion.R;
 import com.softannate.apppuentedecomunicacion.databinding.FragmentMensajesBinding;
 import com.softannate.apppuentedecomunicacion.modelos.dto.MensajeDTO;
-import com.softannate.apppuentedecomunicacion.modelos.dto.ResultadoBusquedaDto;
 import com.softannate.apppuentedecomunicacion.utils.DatePicker;
 import com.softannate.apppuentedecomunicacion.utils.DateUtils;
-import com.softannate.apppuentedecomunicacion.utils.Fecha;
 import com.softannate.apppuentedecomunicacion.utils.FiltroMensajes;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -44,6 +38,8 @@ public class Mensajes extends Fragment {
     private AdapterMensaje adapter;
     private SearchView sv;
     private EditText fechaInicio, fechaFin, fechaInicio2, fechaFin2;
+    private Date fechaInicioGuardada;
+    private Date fechaFinGuardada;
 
 
     @Override
@@ -65,35 +61,33 @@ public class Mensajes extends Fragment {
         NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
 
 
-        adapter = new AdapterMensaje( null, new ArrayList<>(), navController);
-        binding.rvMensajes.setLayoutManager(new LinearLayoutManager(requireContext()));
+        adapter = new AdapterMensaje(null, new ArrayList<>(), navController);
 
+        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+        layoutManager.setReverseLayout(true);          // Invierte el orden
+        layoutManager.setStackFromEnd(true);           // Empieza desde el final (último mensaje)
+        binding.rvMensajes.setLayoutManager(layoutManager);
         binding.rvMensajes.setAdapter(adapter);
 
-        vmViewModel.getResultados().observe(getViewLifecycleOwner(), new Observer<ResultadoBusquedaDto>() {
-            @Override
-            public void onChanged(ResultadoBusquedaDto resultadoBusquedaDto) {
-                GridLayoutManager gl= new GridLayoutManager(requireContext(),1,GridLayoutManager.VERTICAL,true);
+        vmViewModel.getResultados().observe(getViewLifecycleOwner(), resultado -> {
+            List<MensajeDTO> mensajesOrdenados = resultado.getResultados();
+            Collections.reverse(mensajesOrdenados); //nuevo arriba
 
-                binding.rvMensajes.setLayoutManager(gl);
-                binding.rvMensajes.setAdapter(adapter);
-                adapter.setMensajes(resultadoBusquedaDto.getFiltro(), resultadoBusquedaDto.getResultados());
-                adapter.notifyDataSetChanged();
-            }
+            adapter.setMensajes(resultado.getFiltro(), mensajesOrdenados);
+            adapter.notifyDataSetChanged();
         });
+
+
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-               // vmViewModel.buscarMensajes(query, null, null);
                 ejecutarBusqueda();
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //Fecha.buscarConFechas(newText, fechaInicio, fechaFin, vmViewModel);
                 ejecutarBusqueda();
-
                 return true;
             }
         });
@@ -123,12 +117,14 @@ public class Mensajes extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                fechaInicioGuardada = DateUtils.parseFechaDesdeTexto(fechaInicio.getText().toString());
+
                 // Llamo a la búsqueda con las fechas y el texto del SearchView
                 String searchText = sv.getQuery().toString();
                // Fecha.buscarConFechas(searchText, fechaInicio, fechaFin, vmViewModel);
                 ejecutarBusqueda();
 
-                fechaInicio2.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_clear, 0); // Muestra el ícono
+                fechaInicio2.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.close, 0); // Muestra el ícono
             }
 
             @Override
@@ -142,12 +138,13 @@ public class Mensajes extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                fechaFinGuardada = DateUtils.parseFechaDesdeTexto(fechaFin.getText().toString());
 
                 // Llamada a la búsqueda con las fechas y el texto del SearchView
                 String searchText = sv.getQuery().toString();
                // Fecha.buscarConFechas(searchText, fechaInicio, fechaFin, vmViewModel);
                 ejecutarBusqueda();
-                fechaFin2.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_clear, 0); // Muestra el ícono
+                fechaFin2.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.close, 0); // Muestra el ícono
             }
 
             @Override
@@ -224,8 +221,6 @@ public class Mensajes extends Fragment {
             fechaFin2.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }
 
-        // Aplico el filtro de fechas
-       // Fecha.buscarConFechas(searchText, fechaInicio, fechaFin, vmViewModel);
         ejecutarBusqueda();
 
         // Refrescar el Adapter y RecyclerView
@@ -234,11 +229,9 @@ public class Mensajes extends Fragment {
     private void ejecutarBusqueda() {
 
         String texto = sv.getQuery() != null ? sv.getQuery().toString().trim() : "";
-        String fechaInicioStr = fechaInicio.getText().toString();
-        String fechaFinStr = fechaFin.getText().toString();
+        Date inicio = fechaInicioGuardada;
+        Date fin = fechaFinGuardada;
 
-        Date inicio = DateUtils.parseFechaDesdeTexto(fechaInicioStr);
-        Date fin = DateUtils.parseFechaDesdeTexto(fechaFinStr);
 
         boolean hayFiltros = !texto.isEmpty() || inicio != null || fin != null;
 

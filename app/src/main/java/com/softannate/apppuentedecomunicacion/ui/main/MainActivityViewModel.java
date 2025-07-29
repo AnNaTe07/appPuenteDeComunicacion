@@ -2,15 +2,23 @@ package com.softannate.apppuentedecomunicacion.ui.main;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.softannate.apppuentedecomunicacion.base.ViewModelBase;
+import com.softannate.apppuentedecomunicacion.modelos.dto.TokenFirebase;
 import com.softannate.apppuentedecomunicacion.modelos.dto.UsuarioDto;
 
-public class MainActivityViewModel extends AndroidViewModel {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class MainActivityViewModel extends ViewModelBase {
 
     private MutableLiveData<UsuarioDto> usuario;
     private MutableLiveData<String> avatar;
@@ -35,6 +43,33 @@ public class MainActivityViewModel extends AndroidViewModel {
             avatar = new MutableLiveData<>();
         }
         return avatar;
+    }
+    public void obtenerYEnviarTokenFcm() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w("FCM", "No se pudo obtener el token", task.getException());
+                        return;
+                    }
+
+                    String token = task.getResult();
+
+                    TokenFirebase dto = new TokenFirebase(token);
+
+                    Call<Void> call = endpoints.actualizarToken(dto);
+
+                    call.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            Log.d("FCM", "Token FCM enviado correctamente");
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Log.e("FCM", " Error al enviar token", t);
+                        }
+                    });
+                });
     }
 
 /*

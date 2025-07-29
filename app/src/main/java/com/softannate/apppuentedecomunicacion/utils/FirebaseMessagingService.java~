@@ -1,0 +1,4 @@
+package com.softannate.apppuentedecomunicacion.utils;
+
+public class FirebaseMessagingService {
+}

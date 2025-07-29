@@ -1,0 +1,82 @@
+package com.softannate.apppuentedecomunicacion.modelos.dto;
+
+import android.net.Uri;
+
+import java.util.List;
+
+public class MensajeEducativoDto {
+
+        private String mensaje;
+        private int idCategoria;
+        private List<Integer> idUsuarios;
+        private List<Integer> idCursos;
+        private List<Integer> idAlumnos;
+        private boolean establecimiento;
+        private List<Uri> adjuntos;
+
+    public List<Uri> getAdjuntos() {
+        return adjuntos;
+    }
+
+    public void setAdjuntos(List<Uri> adjuntos) {
+        this.adjuntos = adjuntos;
+    }
+
+    public String getMensaje() {
+        return mensaje;
+    }
+
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
+    }
+
+    public int getIdCategoria() {
+        return idCategoria;
+    }
+
+    public void setIdCategoria(int idCategoria) {
+        this.idCategoria = idCategoria;
+    }
+
+    public List<Integer> getIdUsuarios() {
+        return idUsuarios;
+    }
+
+    public void setIdUsuarios(List<Integer> idUsuarios) {
+        this.idUsuarios = idUsuarios;
+    }
+
+    public List<Integer> getIdCursos() {
+        return idCursos;
+    }
+
+    public void setIdCursos(List<Integer> idCursos) {
+        this.idCursos = idCursos;
+    }
+
+    public List<Integer> getIdAlumnos() {
+        return idAlumnos;
+    }
+
+    public void setIdAlumnos(List<Integer> idAlumnos) {
+        this.idAlumnos = idAlumnos;
+    }
+
+    public boolean isEstablecimiento() {
+        return establecimiento;
+    }
+
+    public void setEstablecimiento(boolean establecimiento) {
+        this.establecimiento = establecimiento;
+    }
+
+    @Override
+    public String toString() {
+        return  "mensaje='" + mensaje + '\'' +
+                ", idCategoria=" + idCategoria +
+                ", idUsuarios=" + idUsuarios +
+                ", idCursos=" + idCursos +
+                ", idAlumnos=" + idAlumnos +
+                ", establecimiento=" + establecimiento;
+    }
+}

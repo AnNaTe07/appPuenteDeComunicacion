@@ -1,6 +1,8 @@
 package com.softannate.apppuentedecomunicacion.modelos.dto;
 
+import com.softannate.apppuentedecomunicacion.modelos.Archivo_adjunto;
 import java.io.Serializable;
+import java.util.List;
 
 public class MensajeDTO implements Serializable {
     private int mensajeId;
@@ -17,8 +19,10 @@ public class MensajeDTO implements Serializable {
     private int mensajesNoLeidos;
     private String avatarE;
     private String avatarR;
+    private List<Archivo_adjunto> archivos;
 
-    public MensajeDTO(int mensajeId, String contenido, String fecha_Hora, int emisorId, String emisorNombre, int alumnoId, String alumnoNombre, int receptorId, String receptorNombre, int estadoId, String categoria, int mensajesNoLeidos, String avatarE, String avatarR) {
+
+    public MensajeDTO(int mensajeId, String contenido, String fecha_Hora, int emisorId, String emisorNombre, int alumnoId, String alumnoNombre, int receptorId, String receptorNombre, int estadoId, String categoria, int mensajesNoLeidos, String avatarE, String avatarR, List<Archivo_adjunto> archivos) {
         this.mensajeId = mensajeId;
         this.contenido = contenido;
         this.fecha_Hora = fecha_Hora;
@@ -33,6 +37,7 @@ public class MensajeDTO implements Serializable {
         this.mensajesNoLeidos = mensajesNoLeidos;
         this.avatarE = avatarE;
         this.avatarR = avatarR;
+        this.archivos = archivos;
     }
 
     public int getMensajeId() {
@@ -147,6 +152,15 @@ public class MensajeDTO implements Serializable {
         this.avatarR = avatar;
     }
 
+    public List<Archivo_adjunto> getArchivos() {
+        return archivos;
+    }
+
+    public void setArchivos(List<Archivo_adjunto> archivos) {
+        this.archivos = archivos;
+    }
+
+
     @Override
     public String toString() {
         return  "mensajeId=" + mensajeId +
@@ -161,6 +175,7 @@ public class MensajeDTO implements Serializable {
                 ", estadoId=" + estadoId +'\'' +
                 ", categoria='" + categoria + '\'' +
                 ", mensajesNoLeido=" + mensajesNoLeidos + '\'' +
-                ", avatarE='" + avatarE + '\'';
+                ", avatarE='" + avatarE + '\'' +
+                ", avatarR='" + avatarR + '\'';
     }
 }

@@ -14,12 +14,30 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * ViewModel para gestionar la lógica de inicio de sesión y recuperación de contraseña.
+ * <p>
+ * Realiza validaciones de email y contraseña, gestiona el proceso de autenticación
+ * mediante llamadas a la API, y comunica mensajes de estado a la vista.
+ */
 public class LoginActivityViewModel extends ViewModelPass {
 
+    /**
+     * Constructor que inicializa el ViewModel con el contexto de aplicación.
+     *
+     * @param application contexto de aplicación
+     */
     public LoginActivityViewModel(@NonNull Application application) {
         super(application);
     }
 
+    /**
+     * Valida si la contraseña cumple con los requisitos mínimos.
+     * Verifica longitud, uso de mayúsculas y números.
+     *
+     * @param password contraseña a validar
+     * @return {@code true} si es válida, {@code false} en caso contrario
+     */
     public boolean validarPassword(String password){
         if (password.isEmpty()) {
             mensaje.setValue("Por favor, ingrese su contraseña");
@@ -49,6 +67,12 @@ public class LoginActivityViewModel extends ViewModelPass {
         return true;
     }
 
+    /**
+     * Verifica si el email y la contraseña son válidos antes de iniciar sesión.
+     *
+     * @param email email del usuario
+     * @param password contraseña del usuario
+     */
     public void validarLogin(String email, String password){
         if(!validarEmail(email) || !validarPassword(password)){
             return;
@@ -56,6 +80,14 @@ public class LoginActivityViewModel extends ViewModelPass {
         iniciarSesion(email, password);
     }
 
+    /**
+     * Inicia la sesión en la app utilizando credenciales válidas.
+     * <p>
+     * Guarda los tokens y datos del usuario en preferencias si el login es exitoso.
+     *
+     * @param email email del usuario
+     * @param password contraseña del usuario
+     */
     public void iniciarSesion(String email, String password) {
 
         Log.d("Login", "Iniciando sesión con email: " + email);
@@ -100,6 +132,11 @@ public class LoginActivityViewModel extends ViewModelPass {
         });
     }
 
+    /**
+     * Valida el email antes de iniciar el proceso de recuperación de contraseña.
+     *
+     * @param email email del usuario
+     */
     public void validarRestablecerPass(String email) {
         if (!validarEmail(email)) {
             return;
@@ -107,12 +144,16 @@ public class LoginActivityViewModel extends ViewModelPass {
       enviarEmailParaRestablecer(email);
     }
 
+    /**
+     * Envía una solicitud al backend para enviar un email de recuperación.
+     *
+     * @param email email del usuario
+     */
     public void enviarEmailParaRestablecer(String email) {
         enviandoMensaje.setValue(true);
         OlvidaPassDTO olvidaPass = new OlvidaPassDTO(email);
 
         Call<ResponseBody> call = endpoints.enviarEmail(olvidaPass);
-        Log.d("Login", "Iniciando sesión con email: " + email);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -127,6 +168,7 @@ public class LoginActivityViewModel extends ViewModelPass {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                mensaje.setValue("Error al iniciar sesión. Por favor verifica tu conexión.");
+               Log.e("LoginError", "Error: " + t.getMessage());
             }
         });
     }

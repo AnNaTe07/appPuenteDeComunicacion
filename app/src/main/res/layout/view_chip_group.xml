@@ -12,6 +12,7 @@
         android:textSize="18sp"
         android:text="Destinatarios seleccionados"
         android:textColor="@color/black"
+        android:fontFamily="@font/adamina"
         android:textAppearance="?attr/textAppearanceTitleMedium"
         android:layout_marginBottom="8dp" />
 

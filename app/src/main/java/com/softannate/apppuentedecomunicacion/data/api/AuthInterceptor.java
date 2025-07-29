@@ -11,6 +11,14 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import retrofit2.Call;
 
+/**
+ * Interceptor para gestionar la autenticación de solicitudes HTTP en Retrofit usando tokens.
+ * <p>
+ * Verifica si el access token está expirado y lo renueva automáticamente utilizando un refresh token,
+ * siempre que este sea válido. Si ambos tokens son inválidos, los elimina de la sesión.
+ * <p>
+ * Este interceptor agrega el header {@code Authorization} con el access token en las solicitudes protegidas.
+ */
 public class AuthInterceptor implements Interceptor {
 
     private final SpManager spManager;
@@ -18,6 +26,14 @@ public class AuthInterceptor implements Interceptor {
     private final AuthService authService;
     private final TokenExpirationChecker tokenExpirationChecker;
 
+    /**
+     * Constructor que inyecta los componentes necesarios para el manejo de tokens.
+     *
+     * @param spManager             gestor de almacenamiento de tokens
+     * @param context               contexto de aplicación para acceder a preferencias
+     * @param authService           cliente de autenticación (Retrofit)
+     * @param tokenExpirationChecker verificador de expiración de tokens
+     */
     public AuthInterceptor(SpManager spManager, Context context, AuthService authService, TokenExpirationChecker tokenExpirationChecker) {
         this.spManager = spManager;
         this.context = context;
@@ -25,6 +41,16 @@ public class AuthInterceptor implements Interceptor {
         this.tokenExpirationChecker = tokenExpirationChecker;
     }
 
+    /**
+     * Intercepta cada solicitud HTTP y agrega el header de autorización si es necesario.
+     * <p>
+     * Si el access token ha expirado, intenta renovarlo con el refresh token de forma segura.
+     * En caso de fallo, limpia los tokens de la sesión.
+     *
+     * @param chain cadena de solicitud de OkHttp
+     * @return respuesta HTTP con o sin modificación en los headers
+     * @throws IOException si ocurre un error en la comunicación
+     */
     @Override
     public okhttp3.Response intercept(Chain chain) throws IOException {
         Request originalRequest = chain.request();
@@ -77,17 +103,37 @@ public class AuthInterceptor implements Interceptor {
         return chain.proceed(originalRequest);
     }
 
-    // ----------- MÉTODOS AUXILIARES -----------
+    // ----------------------------------- MÉTODOS AUXILIARES -------------------------------------
 
+    /**
+     * Determina si una solicitud requiere autenticación.
+     *
+     * @param request solicitud actual
+     * @return {@code true} si requiere token, {@code false} si no
+     */
     private boolean needsAuthorization(Request request) {
         String url = request.url().toString();
         return !url.endsWith("/auth/login");
     }
 
+    /**
+     * Verifica si el token es nulo o vacío.
+     *
+     * @param token cadena del token a evaluar
+     * @return {@code true} si está vacío o nulo, {@code false} si contiene valor
+     */
     private boolean isTokenVacioOExpirado(String token) {
         return token == null || token.isEmpty();
     }
 
+    /**
+     * Solicita un nuevo access token usando el refresh token actual.
+     * <p>
+     * Si la renovación falla, los tokens se eliminan de la sesión.
+     *
+     * @param refreshToken token de renovación
+     * @return nuevo access token o {@code null} si falla
+     */
     private String renovarAccessToken(String refreshToken) {
         try {
             JsonObject jsonBody = new JsonObject();

@@ -5,10 +5,11 @@
         <item name="colorOnPrimary">@android:color/white</item>
         <item name="colorSurface">@color/white</item>
         <item name="colorOnSurface">@android:color/black</item>
+
     </style>
 
-    <!-- En res/values/themes.xml o styles.xml -->
-    <!-- res/values/styles.xml -->
+
+    <!-- DatePicker -->
     <style name="CustomDatePickerTheme" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
         <item name="colorPrimary">@color/colorBase</item>
         <item name="colorOnPrimary">@color/white</item>
@@ -29,17 +30,17 @@
         <item name="android:textSelectHandle">@drawable/cursor</item>
         <item name="android:textSelectHandleLeft">@drawable/cursor</item>
         <item name="android:textSelectHandleRight">@drawable/cursor</item>
+
     </style>
 
 
 
     <!-- Fuente personalizada para la AppBar -->
     <style name="AppBarStyle">
-        <item name="android:fontFamily">@font/adamina</item>
+        <item name="android:fontFamily">Roboto</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">22sp</item>
+        <item name="android:textSize">20sp</item>
     </style>
-
     <!-- Fuente personalizada para NavigationView -->
     <style name="NavigationViewItemFontStyle">
         <item name="android:fontFamily">@font/adamina</item>
@@ -55,5 +56,77 @@
     <!-- Overlays -->
     <style name="Theme.AppPuenteDeComunicacion.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="Theme.AppPuenteDeComunicacion.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <!-- Estilo para títulos -->
+    <style name="TituloElegante">
+        <item name="android:fontFamily">@font/adamina</item> <!-- Fuente personalizada -->
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">#2C2C2C</item>
+        <item name="android:letterSpacing">0.02</item>
+    </style>
+
+    <!-- Estilo para texto normal (cuerpo, párrafos) -->
+    <style name="TextoPlano">
+        <item name="android:fontFamily">sans-serif</item> <!-- Fuente del sistema -->
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#4A4A4A</item>
+        <item name="android:lineHeight">22sp</item>
+    </style>
+
+    <!-- Estilo para botones -->
+    <style name="BotonPrimario">
+        <item name="android:fontFamily">@font/adamina</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:backgroundTint">@color/colorBase</item>
+        <item name="android:padding">12dp</item>
+    </style>
+
+    <!-- Estilo para subtítulos o etiquetas -->
+    <style name="Subtitulo">
+        <item name="android:fontFamily">@font/adamina</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#757575</item>
+    </style>
+    <style name="TituloItem">
+        <item name="android:fontFamily">@font/adamina</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#2C2C2C</item>
+        <item name="android:letterSpacing">0.01</item>
+    </style>
+
+    <style name="EtiquetaItem">
+        <item name="android:fontFamily">@font/adamina</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#757575</item>
+    </style>
+
+    <style name="TextoItem">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">#666666</item>
+    </style>
+
+    <style name="EditTextFecha">
+        <item name="android:layout_height">40dp</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:focusable">false</item>
+        <item name="android:importantForAccessibility">yes</item>
+        <item name="android:inputType">none</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">#B6B1B1</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:fontFamily">@font/adamina</item>
+    </style>
+
+    <style name="CheckBoxCustom">
+        <item name="android:textColor">@color/colorBase</item>
+        <item name="android:buttonTint">@color/colorBase</item>
+        <item name="android:fontFamily">@font/adamina</item>
+    </style>
+
 
 </resources>

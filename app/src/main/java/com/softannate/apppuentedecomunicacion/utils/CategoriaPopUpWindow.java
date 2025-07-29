@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,21 +41,24 @@ public class CategoriaPopUpWindow {
 
 
         ListView listView = view.findViewById(R.id.listViewItems);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.item_categorias, obtenerNombres());
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.item_menu, obtenerNombres());
         listView.setAdapter(adapter);
         listView.setDivider(new ColorDrawable(ContextCompat.getColor(context, R.color.colorBase)));
         listView.setDividerHeight(1);
 
-        PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        int anchoFijoPx = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 220, anchorView.getResources().getDisplayMetrics());
+
+        PopupWindow popupWindow = new PopupWindow(view, anchoFijoPx, LinearLayout.LayoutParams.WRAP_CONTENT, true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         int[] location = new int[2];
         anchorView.getLocationOnScreen(location);
         int x = location[0];
-        int popupHeight = view.getMeasuredHeight();
+
         view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-        popupHeight = view.getMeasuredHeight(); // altura real del popup
+        int popupHeight = view.getMeasuredHeight();// altura real del popup
 
         int y = location[1] - popupHeight; // muestra arriba del anchor
 

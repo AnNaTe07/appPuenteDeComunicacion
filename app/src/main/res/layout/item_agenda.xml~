@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_alumno_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:gravity="center_vertical">
+
+
+    <TextView
+        android:id="@+id/tvNombreAgenda"
+        style="@style/TituloItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:textSize="15sp"
+        android:textColor="@color/colorBase"
+        android:text="Nombre"
+        android:paddingStart="8dp" />
+
+    <TextView
+        android:id="@+id/tvTelefono"
+        style="@style/EtiquetaItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre"
+        android:paddingStart="8dp" />
+
+    <ImageButton
+        android:id="@+id/btnLlamar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_call"
+        android:visibility="gone"
+        android:contentDescription="Llamar"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:tint="@color/colorBase" />
+
+
+</LinearLayout>

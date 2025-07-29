@@ -11,5 +11,6 @@
     <color name="colorSeleccionado">#C2F1FA</color>
     <color name="colorLupa">#656768</color>
     <color name="red">#FF0000</color>
+    <color name="colorGris">#f5f4f5</color>
 
 </resources>

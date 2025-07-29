@@ -1,20 +1,76 @@
 package com.softannate.apppuentedecomunicacion.base;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.lifecycle.Observer;
+import com.softannate.apppuentedecomunicacion.R;
 import com.softannate.apppuentedecomunicacion.modelos.Categoria_Mensaje;
+import com.softannate.apppuentedecomunicacion.utils.ArchivoAdjuntoHelper;
 import com.softannate.apppuentedecomunicacion.utils.CategoriaPopUpWindow;
-
 import java.util.List;
 
 
 public class FragmentNuevoConversacion<T extends ViewModelConversacionNuevo> extends FragmentBase<T>{
-protected TextView tvCategoria;
-    protected int idEtiqueta=0;
-    protected EditText editMensaje;
 
+    /** TextView donde se muestra y selecciona la categoría del mensaje. */
+    protected TextView tvCategoria;
+    /** ID de la categoría seleccionada. */
+    protected int idEtiqueta = 0;
+    /** Campo de texto para escribir el mensaje. */
+    protected EditText editMensaje;
+    /** Layout donde se mostrarán las vistas de los archivos adjuntos. */
+    protected LinearLayout layoutAdjuntos;
+    /** Launcher para manejar la selección de archivos por el usuario. */
+    protected ActivityResultLauncher<Intent> launcherAdjuntos;
+
+
+    /**
+     * Configura el launcher que permite seleccionar múltiples archivos desde el dispositivo.
+     *
+     * @param viewModel ViewModel que gestiona los archivos adjuntos
+     */
+    protected void obtenerLauncher(T viewModel) {
+        launcherAdjuntos = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        List<Uri> uris = ArchivoAdjuntoHelper.extraerArchivos(result.getData());
+                        viewModel.agregarArchivos(requireContext(), uris);
+                    }
+                }
+        );
+    }
+
+
+    /**
+     * Lanza el intent de selección de archivos con tipo libre y múltiples seleccionables.
+     */
+    protected void lanzarSelectorArchivos() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        launcherAdjuntos.launch(Intent.createChooser(intent, "Seleccionar archivos"));
+    }
+
+
+    /**
+     * Configura los observers para mostrar mensajes y cargar etiquetas en la UI.
+     *
+     * @param viewModel ViewModel asociado a este fragmento
+     */
     @Override
     protected void configurarObservers(T viewModel) {
         super.configurarObservers(viewModel);
@@ -33,12 +89,29 @@ protected TextView tvCategoria;
             }
         });
     }
+
+    /**
+     * Limpia los campos de entrada y oculta el layout de adjuntos.
+     */
     protected void limpiarCampos(){
         editMensaje.setText("");
         tvCategoria.setText("Categoría");
+        layoutAdjuntos.removeAllViews(); //  Limpia todas las vistas de archivos
+        layoutAdjuntos.setVisibility(View.GONE); //  Lo oculta
     }
+
+    /**
+     * Configura el TextView para mostrar un pop-up de selección de categoría.
+     *
+     * @param tvCategoria Vista donde se muestra la categoría actual
+     * @param categorias Lista de posibles categorías para seleccionar
+     */
     private void cargarEtiquetas(TextView tvCategoria,List<Categoria_Mensaje> categorias) {
+        Log.d("PopupTest", "Click en tvCategoria detectado");
+
         tvCategoria.setOnClickListener(v -> {
+            Log.d("PopupTest", "Click en tvCategoria detectado");
+
             CategoriaPopUpWindow categoriaPopUpWindow = new CategoriaPopUpWindow(
                     requireContext(),
                     categorias,
@@ -49,6 +122,56 @@ protected TextView tvCategoria;
             );
             categoriaPopUpWindow.mostrar(tvCategoria);
         });
+    }
+
+    /**
+     * Observa los archivos adjuntos en el ViewModel y actualiza la UI para mostrarlos.
+     *
+     * @param viewModel ViewModel que contiene la lista de archivos
+     */
+    protected void observarArchivos(T viewModel) {
+        viewModel.archivos.observe(getViewLifecycleOwner(), uris -> {
+            if (layoutAdjuntos == null) return;
+
+            layoutAdjuntos.removeAllViews();
+
+            if (uris.isEmpty()) {
+                layoutAdjuntos.setVisibility(View.GONE);
+            } else {
+                layoutAdjuntos.setVisibility(View.VISIBLE);
+                for (Uri uri : uris) {
+                    layoutAdjuntos.addView(crearVistaArchivo(uri, viewModel));
+                }
+            }
+        });
+    }
+    
+    /**
+     * Crea una vista horizontal con el nombre del archivo y botón para eliminarlo.
+     *
+     * @param uri URI del archivo adjunto
+     * @param viewModel ViewModel que gestiona los archivos
+     * @return Vista lista para insertarse en el layout
+     */
+    protected View crearVistaArchivo(Uri uri, T viewModel) {
+        LinearLayout fila = new LinearLayout(requireContext());
+        fila.setOrientation(LinearLayout.HORIZONTAL);
+        fila.setPadding(8, 8, 8, 8);
+
+        TextView nombre = new TextView(requireContext());
+        nombre.setText(ArchivoAdjuntoHelper.obtenerNombre(requireContext(), uri));
+        nombre.setTextColor(Color.parseColor("#656768"));
+        nombre.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+
+        ImageView btnEliminar = new ImageView(requireContext());
+        btnEliminar.setImageResource(R.drawable.ic_close);
+        btnEliminar.setLayoutParams(new LinearLayout.LayoutParams(48, 48));
+        btnEliminar.setPadding(8, 8, 8, 8);
+        btnEliminar.setOnClickListener(v -> viewModel.eliminarArchivo(uri));
+
+        fila.addView(nombre);
+        fila.addView(btnEliminar);
+        return fila;
     }
 }
 

@@ -15,21 +15,22 @@
 
         <CheckBox
             android:id="@+id/chkCurso"
+            style="@style/CheckBoxCustom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorBase"
-            app:buttonIconTint="@color/white"/>
+            app:buttonIconTint="@color/white" />
+
 
         <TextView
             android:id="@+id/tvCursoNombre"
+            style="@style/TituloItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/colorBase"
             android:text="Nombre del curso"
-            android:textAppearance="?attr/textAppearanceTitleMedium"
             android:paddingStart="8dp"
             android:paddingBottom="8dp" />
+
     </LinearLayout>
 
     <LinearLayout

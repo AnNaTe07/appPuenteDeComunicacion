@@ -1,0 +1,4 @@
+package com.softannate.apppuentedecomunicacion.modelos.dto;
+
+public class ChipDto {
+}

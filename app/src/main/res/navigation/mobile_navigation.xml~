@@ -42,7 +42,8 @@
         android:id="@+id/nav_mensajes"
         android:name="com.softannate.apppuentedecomunicacion.ui.main.mensaje.listaChats.Mensajes"
         android:label="Mensajes"
-        tools:layout="@layout/fragment_mensajes" >
+        tools:layout="@layout/fragment_mensajes">
+
     </fragment>
     <fragment
         android:id="@+id/nav_inicio"
@@ -64,8 +65,16 @@
         android:label="fragment_nuevo_mensaje_educacion"
         tools:layout="@layout/fragment_nuevo_mensaje_educacion" />
     <fragment
-        android:id="@+id/nuevoMensajeTutorFragment"
+        android:id="@+id/nav_nuevoT"
         android:name="com.softannate.apppuentedecomunicacion.ui.main.nuevoMensaje.tutor.NuevoMensajeTutorFragment"
         android:label="fragment_nuevo_mensaje_tutor"
         tools:layout="@layout/fragment_nuevo_mensaje_tutor" />
+    <fragment
+        android:id="@+id/nav_agenda"
+        android:name="com.softannate.apppuentedecomunicacion.ui.main.agenda.AgendaFragment"
+        android:label="AgendaFragment" />
+    <fragment
+        android:id="@+id/fragmentNuevoConversacion"
+        android:name="com.softannate.apppuentedecomunicacion.base.FragmentNuevoConversacion"
+        android:label="FragmentNuevoConversacion" />
 </navigation>

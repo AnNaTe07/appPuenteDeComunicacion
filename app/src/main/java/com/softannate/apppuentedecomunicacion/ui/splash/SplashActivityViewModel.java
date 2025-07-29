@@ -8,16 +8,29 @@ import androidx.lifecycle.MutableLiveData;
 import com.softannate.apppuentedecomunicacion.data.local.SpManager;
 import com.softannate.apppuentedecomunicacion.data.local.TokenExpirationChecker;
 
+/**
+ * ViewModel del SplashActivity.
+ * Se encarga de verificar los tokens y decidir si se debe mostrar
+ * la pantalla principal o la de login.
+ */
 public class SplashActivityViewModel extends AndroidViewModel {
 
     private String accessToken, refreshToken;
     private MutableLiveData<Boolean> mostrarMain=new MutableLiveData<>();;
     private MutableLiveData<Boolean> mostrarLogin=new MutableLiveData<>();;
 
+    /**
+     * Constructor de SplashActivityViewModel.
+     * @param application Contexto de la aplicación requerido por AndroidViewModel.
+     */
     public SplashActivityViewModel(@NonNull Application application) {
         super(application);
     }
 
+    /**
+     * LiveData que indica si se debe mostrar la pantalla principal.
+     * @return LiveData<Boolean> verdadero si se debe mostrar MainActivity.
+     */
     public LiveData getMostrarMain() {
         if(mostrarMain==null){
             mostrarMain= new MutableLiveData<>();
@@ -25,12 +38,22 @@ public class SplashActivityViewModel extends AndroidViewModel {
         return mostrarMain;
     }
 
+    /**
+     * LiveData que indica si se debe mostrar la pantalla de login.
+     * @return LiveData<Boolean> verdadero si se debe mostrar LoginFragment.
+     */
     public LiveData getMostrarLogin() {
         if(mostrarLogin==null){
             mostrarLogin= new MutableLiveData<>();
         }
         return mostrarLogin;
     }
+
+    /**
+     * Verifica el estado de los tokens (access y refresh).
+     * Decide si navegar al Main o al Login según validez de los tokens.
+     * Se usa al iniciar la app en SplashActivity.
+     */
     public void checkToken() {
         refreshToken = SpManager.getRefreshToken(getApplication().getApplicationContext());
         accessToken = SpManager.getAccessToken(getApplication().getApplicationContext());

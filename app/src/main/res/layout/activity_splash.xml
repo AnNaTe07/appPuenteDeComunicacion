@@ -22,12 +22,13 @@
 
     <TextView
         android:id="@+id/textView7"
+        style="@style/Subtitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/akaya_kanadaka"
+
         android:text="Puente De Comunicación"
         android:textColor="#0F0E0E"
-        android:textSize="20sp"
+     
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

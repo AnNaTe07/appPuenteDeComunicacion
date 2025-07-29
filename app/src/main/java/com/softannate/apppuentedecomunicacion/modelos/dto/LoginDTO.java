@@ -1,27 +1,59 @@
 package com.softannate.apppuentedecomunicacion.modelos.dto;
 
+/**
+ * DTO (Data Transfer Object) utilizado para enviar las credenciales de inicio de sesión.
+ * <p>
+ * Contiene el email y la contraseña del usuario requeridos para autenticación.
+ * Se usa en el cuerpo de la solicitud HTTP POST al endpoint de login.
+ */
 public class LoginDTO {
 
     private String email;
     private String password;
 
+    /**
+     * DTO (Data Transfer Object) utilizado para enviar las credenciales de inicio de sesión.
+     * <p>
+     * Contiene el email y la contraseña del usuario requeridos para autenticación.
+     * Se usa en el cuerpo de la solicitud HTTP POST al endpoint de login.
+     */
     public LoginDTO(String email, String password) {
         this.email = email;
         this.password = password;
     }
 
+    /**
+     * Obtiene el email del usuario.
+     *
+     * @return email como cadena de texto
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Establece el email del usuario.
+     *
+     * @param email nueva dirección de correo electrónico
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Obtiene la contraseña del usuario.
+     *
+     * @return contraseña como cadena de texto
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Establece la contraseña del usuario.
+     *
+     * @param password nueva contraseña
+     */
     public void setPassword(String password) {
         this.password = password;
     }

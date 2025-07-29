@@ -10,20 +10,19 @@
 
     <CheckBox
         android:id="@+id/cbPersona"
+        style="@style/CheckBoxCustom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:buttonTint="@color/colorBase"
+        app:buttonIconTint="@color/white" />
 
-        app:buttonIconTint="@color/white"/>
 
     <TextView
         android:id="@+id/tvNombre"
+        style="@style/TituloItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:fontFamily="@font/adamina"
         android:text="Nombre"
-        android:paddingStart="8dp"
-        android:textAppearance="?attr/textAppearanceBody1" />
+        android:paddingStart="8dp" />
+
 
 </LinearLayout>

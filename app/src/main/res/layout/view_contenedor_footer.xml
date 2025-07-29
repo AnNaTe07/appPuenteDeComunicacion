@@ -1,0 +1,37 @@
+<LinearLayout android:id="@+id/baseFooterHorizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="#f0f0f0"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/contenedorFooter2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#f0f0f0"
+        android:paddingVertical="2dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp">
+
+        <!-- Footer horizontal -->
+        <include
+            android:id="@+id/layoutFooter"
+            layout="@layout/view_foot_escribir" />
+
+        <!-- Archivos adjuntos debajo -->
+        <LinearLayout
+            android:id="@+id/layoutAdjuntos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="2dp"
+            android:background="#FFFFFF"
+            android:visibility="gone" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/agendaLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!--  Buscador -->
+
+
+    <!--  Lista expandible de cursos y alumnos -->
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="#EDE8E8"
+        android:drawableEnd="@drawable/close"
+        android:padding="10dp"
+        app:iconifiedByDefault="false" />
+
+    <ExpandableListView
+        android:id="@+id/listaCursosAlumnos"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:dividerHeight="1dp"
+        android:indicatorLeft="20dp"
+        android:childDivider="@android:color/darker_gray"/>
+
+</LinearLayout>

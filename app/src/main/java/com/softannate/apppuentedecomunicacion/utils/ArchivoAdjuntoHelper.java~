@@ -1,0 +1,129 @@
+package com.softannate.apppuentedecomunicacion.utils;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.OpenableColumns;
+import android.widget.Toast;
+import java.util.ArrayList;
+import java.util.List;
+/*
+public class ArchivoAdjuntoHelper {
+
+        public static final int PICK_FILES_REQUEST_CODE = 1001;
+        public static final int MAX_FILES = 3;
+        public static final long MAX_FILE_SIZE_BYTES = 20 * 1024 * 1024; // 20MB
+
+
+    public static List<Uri> procesarResultado(Context context, Intent data) {
+        List<Uri> archivosValidos = new ArrayList<>();
+
+        if (data == null) return archivosValidos;
+
+        List<Uri> seleccionados = new ArrayList<>();
+
+        if (data.getClipData() != null) {
+            int totalSeleccionados = data.getClipData().getItemCount();
+
+            for (int i = 0; i < totalSeleccionados; i++) {
+                Uri uri = data.getClipData().getItemAt(i).getUri();
+                seleccionados.add(uri);
+            }
+        } else if (data.getData() != null) {
+            seleccionados.add(data.getData());
+        }
+
+        int archivosAgregados = 0;
+
+        for (Uri uri : seleccionados) {
+            if (archivosAgregados >= MAX_FILES) {
+                Toast.makeText(context, "Solo se permiten " + MAX_FILES + " archivos. Se ignoraron extras.", Toast.LENGTH_SHORT).show();
+                break;
+            }
+            if (validarPeso(context, uri)) {
+                archivosValidos.add(uri);
+                archivosAgregados++;
+            } else {
+                Toast.makeText(context, "Archivo demasiado pesado: " + obtenerNombreArchivo(context, uri), Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        return archivosValidos;
+    }
+    private static String obtenerNombreArchivo(Context context, Uri uri) {
+        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+        String nombre = "archivo";
+        if (cursor != null && cursor.moveToFirst()) {
+            int index = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+            if (index >= 0) nombre = cursor.getString(index);
+            cursor.close();
+        }
+        return nombre;
+    }
+
+
+    private static boolean validarPeso(Context context, Uri uri) {
+            Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+            if (cursor != null) {
+                int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
+                cursor.moveToFirst();
+                long size = cursor.getLong(sizeIndex);
+                cursor.close();
+                return size <= MAX_FILE_SIZE_BYTES;
+            }
+            return false;
+        }
+    }
+
+
+ */
+
+public class ArchivoAdjuntoHelper {
+    public static final long MAX_FILE_SIZE_BYTES = 20 * 1024 * 1024;
+
+    public static List<Uri> extraerArchivos(Intent data) {
+        List<Uri> seleccionados = new ArrayList<>();
+
+        if (data == null) return seleccionados;
+
+        if (data.getClipData() != null) {
+            int total = data.getClipData().getItemCount();
+            for (int i = 0; i < total; i++) {
+                Uri uri = data.getClipData().getItemAt(i).getUri();
+                seleccionados.add(uri);
+            }
+        } else if (data.getData() != null) {
+            seleccionados.add(data.getData());
+        }
+
+        return seleccionados;
+    }
+
+    public static boolean esArchivoValido(Context context, Uri uri) {
+        try (Cursor cursor = context.getContentResolver().query(uri, null, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                int index = cursor.getColumnIndex(OpenableColumns.SIZE);
+                if (index >= 0) {
+                    long size = cursor.getLong(index);
+                    return size <= MAX_FILE_SIZE_BYTES;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static String obtenerNombre(Context context, Uri uri) {
+        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+        String nombre = "archivo";
+        if (cursor != null && cursor.moveToFirst()) {
+            int index = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+            if (index >= 0) nombre = cursor.getString(index);
+            cursor.close();
+        }
+        return nombre;
+    }
+}

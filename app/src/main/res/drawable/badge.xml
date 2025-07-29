@@ -1,6 +1,5 @@
-<!-- res/drawable/badge_background.xml -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval">
-    <solid android:color="#FF0000" />
+    android:shape="rectangle">
+    <solid android:color="#F42F2F" />
     <corners android:radius="10dp" />
 </shape>

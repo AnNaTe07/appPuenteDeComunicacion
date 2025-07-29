@@ -1,0 +1,197 @@
+package com.softannate.apppuentedecomunicacion.ui.main.nuevoMensaje.educacion;
+
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import android.os.Bundle;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
+import com.softannate.apppuentedecomunicacion.R;
+import com.softannate.apppuentedecomunicacion.base.FragmentNuevoConversacion;
+import com.softannate.apppuentedecomunicacion.databinding.FragmentNuevoMensajeEducacionBinding;
+import com.softannate.apppuentedecomunicacion.modelos.dto.MensajeEducativoDto;
+import com.softannate.apppuentedecomunicacion.ui.main.nuevoMensaje.ChipGroupHelper;
+
+/**
+ * Fragmento encargado de enviar un mensaje educativo a destinatarios específicos.
+ * Gestiona la selección de cursos, alumnos, personal y visualización de chips.
+ * Interactúa con el ViewModel {@link NuevoMensajeEducacionViewModel} y utiliza {@link DestinatarioAdapter}.
+ */
+public class NuevoMensajeEducacionFragment extends FragmentNuevoConversacion {
+
+    private NuevoMensajeEducacionViewModel vmNuevoE;
+    private FragmentNuevoMensajeEducacionBinding binding;
+    private DestinatarioAdapter adapter;
+    private RecyclerView rvNuevoMensaje;
+
+    /**
+     * Crea una nueva instancia del fragmento.
+     * Útil para inicialización desde otro componente.
+     *
+     * @return instancia del fragmento NuevoMensajeEducacionFragment
+     */
+    public static NuevoMensajeEducacionFragment newInstance() {
+        return new NuevoMensajeEducacionFragment();
+    }
+
+    /**
+     * Infla el layout del fragmento, inicializa el ViewModel, configura observers
+     * y prepara la vista principal con selección de destinatarios y chips.
+     *
+     * @return vista raíz del fragmento
+     */
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+
+        binding = FragmentNuevoMensajeEducacionBinding.inflate(inflater, container, false);
+
+        vmNuevoE = new ViewModelProvider(this).get(NuevoMensajeEducacionViewModel.class);
+        configurarObservers(vmNuevoE);
+        configurarRecyclerView();
+        observarViewModel();
+
+        return binding.getRoot();
+    }
+    /**
+     * Configura el RecyclerView que muestra los destinatarios, junto con su adapter
+     * y el listener para manejar selecciones de personal y cursos.
+     */
+    private void configurarRecyclerView() {
+        rvNuevoMensaje = binding.layoutDestinatarios.rvNuevoMensaje;
+        adapter = new DestinatarioAdapter(requireContext());
+        rvNuevoMensaje.setLayoutManager(new LinearLayoutManager(requireContext()));
+        rvNuevoMensaje.setAdapter(adapter);
+
+        // Escucha cuando se toca un header para iniciar la carga
+        adapter.setOnSeleccionCambioListener((personal, cursos, alumnos) -> {
+            if (personal != null && personal.isEmpty()) {
+                vmNuevoE.obtenerDestinatarios();
+            }
+            if (cursos != null && cursos.isEmpty()) {
+                vmNuevoE.cargarCursos();
+            }
+            vmNuevoE.sincronizarChips();
+        });
+
+        adapter.setOnCursoExpandirListener(cursoId -> {
+            vmNuevoE.setCursoExpandido(cursoId);//guardo el curso seleccionado
+            vmNuevoE.cargarAlumnosDeCurso(cursoId); //cargo los alumnos
+        });
+    }
+
+    /**
+     * Observa los LiveData del ViewModel para actualizar la UI
+     * según cambios en destinatarios, cursos, alumnos visibles y chips.
+     */
+    private void observarViewModel() {
+        vmNuevoE.getEnviandoMensaje().observe(getViewLifecycleOwner(), aBoolean ->
+                binding.contenedorFooter.layoutFooter.btnEnviar.setEnabled(!aBoolean)
+        );
+
+        vmNuevoE.getLimpiar().observe(getViewLifecycleOwner(), aBoolean -> {
+            limpiarCampos();
+            binding.layoutChipGroup.cgDestinatarios.removeAllViews();
+            adapter.resetearEstadoVisual();
+        });
+
+        vmNuevoE.getDestinatarios().observe(getViewLifecycleOwner(), lista ->
+                adapter.setData(lista, vmNuevoE.getCursos().getValue(), vmNuevoE.getAlumnosPorCurso())
+        );
+
+        vmNuevoE.getCursos().observe(getViewLifecycleOwner(), lista ->
+                adapter.setData(vmNuevoE.getDestinatarios().getValue(), lista, vmNuevoE.getAlumnosPorCurso())
+        );
+
+        vmNuevoE.getAlumnosVisibles().observe(getViewLifecycleOwner(), alumnos -> {
+            int cursoId = vmNuevoE.getCursoExpandidoId();
+            vmNuevoE.getAlumnosPorCurso().put(cursoId, alumnos);
+            adapter.setData(
+                    vmNuevoE.getDestinatarios().getValue(),
+                    vmNuevoE.getCursos().getValue(),
+                    vmNuevoE.getAlumnosPorCurso()
+            );
+        });
+
+        vmNuevoE.getChips().observe(getViewLifecycleOwner(), chips ->
+                ChipGroupHelper.renderChips(
+                        requireContext(),
+                        binding.layoutChipGroup.cgDestinatarios,
+                        chips,
+                        (id, tipo) -> vmNuevoE.cerrarChip(id, tipo)
+                )
+        );
+    }
+
+    /**
+     * Una vez creada la vista, configura los componentes visuales de la parte inferior:
+     * - Categoría seleccionada
+     * - Campo de texto del mensaje
+     * - Adjuntos
+     * - Botón de envío
+     *
+     * Además, inicializa los listeners de archivos y realiza el envío del mensaje.
+     */
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        configurarFooter();
+        configurarBotonEnviar();
+    }
+
+    /**
+     * Configura los elementos del footer del fragmento:
+     * - Campo de mensaje
+     * - Categoría
+     * - Icono para adjuntar archivos
+     * - Layout de adjuntos
+     */
+    private void configurarFooter() {
+        this.tvCategoria = binding.contenedorFooter.layoutFooter.tvCategoria;
+        this.editMensaje = binding.contenedorFooter.layoutFooter.editMensaje;
+
+        binding.contenedorFooter.layoutFooter.iconAdjunto.setOnClickListener(v -> {
+            lanzarSelectorArchivos();
+        });
+
+        layoutAdjuntos = binding.contenedorFooter.layoutAdjuntos;
+
+        observarArchivos(vmNuevoE);
+        obtenerLauncher(vmNuevoE);
+    }
+
+    /**
+     * Configura el botón de envío del mensaje, obtiene los datos del formulario
+     * y llama al método correspondiente del ViewModel para enviar el payload.
+     */
+    private void configurarBotonEnviar() {
+        ImageButton btnEnviar = binding.contenedorFooter.layoutFooter.btnEnviar;
+
+        btnEnviar.setOnClickListener(v -> {
+            String mensaje = binding.contenedorFooter.layoutFooter.editMensaje.getText().toString().trim();
+            boolean todoPersonal = adapter.todoElPersonalMarcado();
+            MensajeEducativoDto dto = vmNuevoE.construirPayload(mensaje, idEtiqueta, todoPersonal);
+
+            vmNuevoE.enviarMensajeEducativo(requireContext(), dto);
+        });
+    }
+
+
+    /**
+     * Invocado después de la creación de la actividad.
+     * En este caso, vuelve a obtener el ViewModel asociado.
+     */
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        vmNuevoE = new ViewModelProvider(this).get(NuevoMensajeEducacionViewModel.class);
+        // TODO: Use the ViewModel
+    }
+
+}

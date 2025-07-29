@@ -6,6 +6,10 @@ public class DestinatarioDto {
     private int id;
     private String nombre;
     private Rol rol;
+    private boolean seleccionado;
+
+    public DestinatarioDto() {
+    }
 
     public DestinatarioDto(int id, String nombre, Rol rol) {
         this.id = id;
@@ -35,6 +39,14 @@ public class DestinatarioDto {
 
     public void setRol(Rol rol) {
         this.rol = rol;
+    }
+
+    public boolean isSeleccionado() {
+        return seleccionado;
+    }
+
+    public void setSeleccionado(boolean seleccionado) {
+        this.seleccionado = seleccionado;
     }
 
     @Override

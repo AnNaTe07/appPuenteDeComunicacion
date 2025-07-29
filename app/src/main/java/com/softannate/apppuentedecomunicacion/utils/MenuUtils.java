@@ -3,9 +3,9 @@ package com.softannate.apppuentedecomunicacion.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
@@ -49,6 +47,9 @@ public class MenuUtils {
     private static void manejarSeleccion(Activity activity, String opcionSeleccionada, PopupWindow popupWindow) {
         popupWindow.dismiss();
         switch (opcionSeleccionada) {
+            case "Agenda":
+                navegar(activity, R.id.nav_agenda);
+                break;
             case "Nuevo Mensaje":
                 String rol=SpManager.getRol(activity);
                 Log.d("MenuUtils", "rol: " + rol);
@@ -88,6 +89,10 @@ public class MenuUtils {
 
     private static List<String> generarOpcionesMenu(Context context) {
         List<String> opcionesMenu = new ArrayList<>();
+        String rol = SpManager.getRol(context);
+        if (!"5".equals(rol)) {
+            opcionesMenu.add("Agenda");
+        }
         opcionesMenu.add("Nuevo Mensaje");
         opcionesMenu.add("Contacto Institucional");
         opcionesMenu.add("Cerrar Sesión");
@@ -95,15 +100,11 @@ public class MenuUtils {
     }
 
     private static void configurarAdapter(Context context, ListView listViewPrincipal, List<String> opcionesMenu) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, opcionesMenu) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, R.layout.item_menu, opcionesMenu) {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
-                TextView textView = view.findViewById(android.R.id.text1);
-                textView.setTextColor(ContextCompat.getColor(context, R.color.colorBase));
-                Typeface typeface = ResourcesCompat.getFont(context, R.font.adamina);
-                textView.setTypeface(typeface);
 
                 return view;
             }
@@ -115,10 +116,10 @@ public class MenuUtils {
 
     private static void configurarPopupWindow(PopupWindow popupWindow, View popupView, View anchorView) {
         popupWindow.setContentView(popupView);
-        popupView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-        int popupWidth = popupView.getMeasuredWidth();
 
-        popupWindow.setWidth(popupWidth);
+        popupWindow.setWidth((int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 220, anchorView.getResources().getDisplayMetrics()));
+
         popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
 
         popupWindow.setFocusable(true);

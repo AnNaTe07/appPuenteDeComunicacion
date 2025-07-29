@@ -1,0 +1,89 @@
+<LinearLayout
+    android:id="@+id/footEscribir"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#f0f0f0"
+    android:backgroundTint="@color/white"
+    android:orientation="horizontal"
+    android:paddingVertical="4dp"
+    android:paddingStart="5dp"
+    android:paddingEnd="5dp"
+    android:gravity="bottom"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Bloque con categoría + EditText en vertical -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvCategoria"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="2dp"
+            android:fontFamily="@font/adamina"
+            android:text="Categoría"
+            android:textColor="@color/colorBase"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="4dp">
+
+            <!-- Ícono de adjuntar archivo -->
+            <ImageView
+                android:id="@+id/iconAdjunto"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:clickable="true"
+                android:contentDescription="Adjuntar archivo"
+                android:focusable="true"
+                android:padding="4dp"
+                android:src="@drawable/clip" />
+
+            <!-- Campo de texto para el mensaje -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="287dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:boxBackgroundMode="none">
+
+                <EditText
+                    android:id="@+id/editMensaje"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/search"
+                    android:cursorVisible="true"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:maxLength="500"
+                    android:maxLines="2"
+                    android:minHeight="48dp"
+                    android:padding="8dp"
+                    android:textColor="@android:color/black"
+                    android:textCursorDrawable="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <!-- Botón de enviar -->
+            <ImageButton
+                android:id="@+id/btnEnviar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Enviar mensaje"
+                android:src="@drawable/enviar"
+                app:tint="@color/colorBase" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

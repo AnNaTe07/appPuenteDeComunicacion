@@ -26,10 +26,6 @@
             android:showDividers="middle">
 
             <include
-                android:id="@+id/layoutRadios"
-                layout="@layout/view_seleccion_radios" />
-
-            <include
                 android:id="@+id/layoutDestinatarios"
                 layout="@layout/view_lista_destinatarios" />
 
@@ -39,8 +35,8 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Footer -->
     <include
-        android:id="@+id/layoutEscribir"
-        layout="@layout/view_foot_escribir" />
+        android:id="@+id/contenedorFooter"
+        layout="@layout/view_contenedor_footer" />
+
 </LinearLayout>

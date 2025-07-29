@@ -21,6 +21,13 @@ import com.softannate.apppuentedecomunicacion.ui.login.LoginActivity;
 import com.softannate.apppuentedecomunicacion.ui.main.MainActivity;
 import com.softannate.apppuentedecomunicacion.utils.NavigationBarColor;
 
+/**
+ * Actividad de presentación (Splash) que muestra una animación inicial
+ * mientras determina si el usuario debe ingresar a la pantalla principal o al login.
+ * <p>
+ * Utiliza animaciones de escala y transparencia para suavizar la aparición del logo
+ * y realiza una verificación del estado del token mediante un ViewModel.
+ */
 public class SplashActivity extends AppCompatActivity {
 
     private SplashActivityViewModel vm;
@@ -28,6 +35,12 @@ public class SplashActivity extends AppCompatActivity {
     private ActivitySplashBinding binding;
     private static final long SPLASH_DELAY = 3000;
 
+    /**
+     * Método de ciclo de vida que inicializa la interfaz y lanza animaciones,
+     * además de observar el estado de autenticación para redirigir al usuario.
+     *
+     * @param savedInstanceState estado guardado de la actividad anterior
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,11 +48,13 @@ public class SplashActivity extends AppCompatActivity {
         binding = ActivitySplashBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         EdgeToEdge.enable(this);
-        vm=new ViewModelProvider(this).get(SplashActivityViewModel.class);
 
+        // Inicializa el ViewModel y la imagen del splash
+        vm=new ViewModelProvider(this).get(SplashActivityViewModel.class);
         splashImage = binding.imageView;
         splashImage.setVisibility(View.VISIBLE);
 
+        // Configura animación de entrada del logo con escala y transparencia
         // INICIO: Imagen muy pequeña y transparente
         splashImage.setScaleX(0f);
         splashImage.setScaleY(0f);
@@ -61,6 +76,7 @@ public class SplashActivity extends AppCompatActivity {
         animatorSet.setInterpolator(new OvershootInterpolator(1.2f));
         animatorSet.start();
 
+        // Verifica token y observa resultado para navegar al Main o Login
         vm.checkToken();
         vm.getMostrarMain().observe(this, new Observer<Boolean>() {
             @Override
@@ -89,7 +105,8 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
 
-        NavigationBarColor.setNavigationBarColor(this, R.color.white);
+        // Ajusta colores de barra de navegación y padding según insets del sistema
+        NavigationBarColor.setNavigationBarColor(this, R.color.white, R.color.white);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.splash), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
